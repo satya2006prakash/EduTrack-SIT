@@ -736,6 +736,25 @@
       text-align: center;
     }
     
+    .qty-input {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      width: 40px;
+      text-align: center;
+      outline: none;
+      -moz-appearance: textfield;
+    }
+    
+    .qty-input::-webkit-outer-spin-button,
+    .qty-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
     /* Advice Box */
     .advice-box {
       font-size: 12px;
@@ -2595,8 +2614,99 @@
         course.attended = Math.max(0, Math.min(course.conducted, course.attended + amount));
       }
       
+      // Update inputs in DOM
+      const inputAttended = document.getElementById(`input-attended-${courseId}`);
+      const inputConducted = document.getElementById(`input-conducted-${courseId}`);
+      if (inputAttended) inputAttended.value = course.attended;
+      if (inputConducted) inputConducted.value = course.conducted;
+      
+      updateAttendanceCardUI(courseId);
       saveToLocalStorage();
-      renderAll();
+    }
+    
+    function handleQtyInput(courseId, field, value) {
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+      
+      let val = parseInt(value);
+      if (isNaN(val)) val = 0;
+      val = Math.max(0, val);
+      
+      if (field === 'conducted') {
+        course.conducted = val;
+      } else if (field === 'attended') {
+        course.attended = val;
+      }
+      
+      updateAttendanceCardUI(courseId);
+      saveToLocalStorage();
+    }
+    
+    function validateQtyInputs(courseId) {
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+      
+      // Enforce rules: attended <= conducted
+      if (course.attended > course.conducted) {
+        course.attended = course.conducted;
+      }
+      
+      // Sync inputs in DOM if they changed due to validation
+      const inputAttended = document.getElementById(`input-attended-${courseId}`);
+      const inputConducted = document.getElementById(`input-conducted-${courseId}`);
+      if (inputAttended) inputAttended.value = course.attended;
+      if (inputConducted) inputConducted.value = course.conducted;
+      
+      updateAttendanceCardUI(courseId);
+      saveToLocalStorage();
+    }
+    
+    function updateAttendanceCardUI(courseId) {
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+      
+      const attStats = getAttendanceStats(course.attended, course.conducted);
+      const statusColor = attStats.status === 'safe' ? 'var(--success)' : (attStats.status === 'warning' ? 'var(--warning)' : 'var(--danger)');
+      const strokeDashoffset = 251.2 - (251.2 * attStats.percent) / 100;
+      
+      // Update Gauge Fill
+      const gaugeFill = document.getElementById(`gauge-fill-${courseId}`);
+      if (gaugeFill) {
+        gaugeFill.setAttribute('stroke', statusColor);
+        gaugeFill.setAttribute('stroke-dashoffset', strokeDashoffset);
+      }
+      
+      // Update Gauge Text
+      const gaugePercent = document.getElementById(`gauge-percent-${courseId}`);
+      if (gaugePercent) {
+        gaugePercent.style.color = statusColor;
+        gaugePercent.textContent = `${attStats.percent.toFixed(0)}%`;
+      }
+      
+      const gaugeLabel = document.getElementById(`gauge-label-${courseId}`);
+      if (gaugeLabel) {
+        gaugeLabel.textContent = attStats.statusText;
+      }
+      
+      // Update Stats
+      const statAttended = document.getElementById(`stat-attended-${courseId}`);
+      if (statAttended) statAttended.textContent = course.attended;
+      
+      const statConducted = document.getElementById(`stat-conducted-${courseId}`);
+      if (statConducted) statConducted.textContent = course.conducted;
+      
+      const statTarget = document.getElementById(`stat-target-${courseId}`);
+      if (statTarget) statTarget.textContent = Math.ceil(course.conducted * 0.85);
+      
+      // Update Advice Box
+      const adviceBox = document.getElementById(`advice-box-${courseId}`);
+      if (adviceBox) {
+        adviceBox.className = `advice-box ${attStats.status}`;
+        adviceBox.innerHTML = attStats.advice;
+      }
+      
+      // Update Global Metrics
+      updateGlobalMetrics();
     }
     
     // Update marks
@@ -2943,29 +3053,29 @@
               <div class="gauge-container">
                 <svg class="gauge-svg">
                   <circle class="gauge-track" cx="50" cy="50" r="40"></circle>
-                  <circle class="gauge-fill" cx="50" cy="50" r="40" 
+                  <circle class="gauge-fill" id="gauge-fill-${c.id}" cx="50" cy="50" r="40" 
                           stroke="${statusColor}"
                           stroke-dasharray="251.2" 
                           stroke-dashoffset="${strokeDashoffset}"></circle>
                 </svg>
                 <div class="gauge-text">
-                  <span class="gauge-percent" style="color: ${statusColor}">${attStats.percent.toFixed(0)}%</span>
-                  <span class="gauge-label">${attStats.statusText}</span>
+                  <span class="gauge-percent" id="gauge-percent-${c.id}" style="color: ${statusColor}">${attStats.percent.toFixed(0)}%</span>
+                  <span class="gauge-label" id="gauge-label-${c.id}">${attStats.statusText}</span>
                 </div>
               </div>
               
               <div class="course-stats">
                 <div class="info-row">
                   <span>Attended:</span>
-                  <span class="val">${c.attended}</span>
+                  <span class="val" id="stat-attended-${c.id}">${c.attended}</span>
                 </div>
                 <div class="info-row">
                   <span>Conducted:</span>
-                  <span class="val">${c.conducted}</span>
+                  <span class="val" id="stat-conducted-${c.id}">${c.conducted}</span>
                 </div>
                 <div class="info-row" style="margin-top: 4px; padding-top: 4px; border-top: 1px dashed rgba(255,255,255,0.05);">
                   <span>Target (85%):</span>
-                  <span class="val">${Math.ceil(c.conducted * 0.85)}</span>
+                  <span class="val" id="stat-target-${c.id}">${Math.ceil(c.conducted * 0.85)}</span>
                 </div>
               </div>
             </div>
@@ -2975,7 +3085,7 @@
                 <span class="control-label">Attended</span>
                 <div class="control-actions">
                   <button class="btn-qty" onclick="updateQty('${c.id}', 'attended', -1)">-</button>
-                  <span class="qty-display">${c.attended}</span>
+                  <input type="number" class="qty-input" id="input-attended-${c.id}" value="${c.attended}" min="0" oninput="handleQtyInput('${c.id}', 'attended', this.value)" onblur="validateQtyInputs('${c.id}')" onkeydown="if(event.key === 'Enter') { this.blur(); }">
                   <button class="btn-qty" onclick="updateQty('${c.id}', 'attended', 1)">+</button>
                 </div>
               </div>
@@ -2983,13 +3093,13 @@
                 <span class="control-label">Conducted</span>
                 <div class="control-actions">
                   <button class="btn-qty" onclick="updateQty('${c.id}', 'conducted', -1)">-</button>
-                  <span class="qty-display">${c.conducted}</span>
+                  <input type="number" class="qty-input" id="input-conducted-${c.id}" value="${c.conducted}" min="0" oninput="handleQtyInput('${c.id}', 'conducted', this.value)" onblur="validateQtyInputs('${c.id}')" onkeydown="if(event.key === 'Enter') { this.blur(); }">
                   <button class="btn-qty" onclick="updateQty('${c.id}', 'conducted', 1)">+</button>
                 </div>
               </div>
             </div>
             
-            <div class="advice-box ${attStats.status}">
+            <div class="advice-box ${attStats.status}" id="advice-box-${c.id}">
               ${attStats.advice}
             </div>
           </div>
