@@ -42,4 +42,45 @@ CREATE POLICY "Users can upsert own data"
   USING (auth.uid() = id)
   WITH CHECK (auth.uid() = id);
 
+-- ============================================================
+--  6. User Feedbacks & Bug Reports Setup
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS public.user_feedbacks (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id       UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  user_email    TEXT,
+  full_name     TEXT,
+  category      TEXT,
+  message       TEXT NOT NULL,
+  rating        INTEGER,
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
+
+-- 7. Enable Row-Level Security for feedbacks
+ALTER TABLE public.user_feedbacks ENABLE ROW LEVEL SECURITY;
+
+-- 8. Policy: anyone can insert feedback
+DROP POLICY IF EXISTS "Anyone can insert feedback" ON public.user_feedbacks;
+CREATE POLICY "Anyone can insert feedback"
+  ON public.user_feedbacks
+  FOR INSERT
+  WITH CHECK (true);
+
+-- 9. Policy: only site creator / admins can read all feedback
+DROP POLICY IF EXISTS "Admins can select all feedback" ON public.user_feedbacks;
+CREATE POLICY "Admins can select all feedback"
+  ON public.user_feedbacks
+  FOR SELECT
+  TO authenticated
+  USING (auth.jwt()->>'email' IN ('satya2006prakash@gmail.com', 'satyaprakash2006@gmail.com', 'admin@edutrack.com', 'satya.prakash@sit.edu'));
+
+-- 10. Policy: only site creator / admins can delete feedback
+DROP POLICY IF EXISTS "Admins can delete feedback" ON public.user_feedbacks;
+CREATE POLICY "Admins can delete feedback"
+  ON public.user_feedbacks
+  FOR DELETE
+  TO authenticated
+  USING (auth.jwt()->>'email' IN ('satya2006prakash@gmail.com', 'satyaprakash2006@gmail.com', 'admin@edutrack.com', 'satya.prakash@sit.edu'));
+
 -- Done! ✅

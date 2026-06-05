@@ -55,6 +55,106 @@
       --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
+    body.light-mode {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f5f9;
+      --bg-glass: rgba(255, 255, 255, 0.75);
+      --bg-glass-card: rgba(255, 255, 255, 0.55);
+      --border-glass: rgba(0, 0, 0, 0.08);
+      --border-glass-focus: rgba(99, 102, 241, 0.45);
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #94a3b8;
+      
+      --success: #047857;
+      --warning: #b45309;
+      --danger: #b91c1c;
+      
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+      --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+      
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 40%);
+    }
+    
+    body.light-mode select option {
+      color: #0f172a !important;
+      background: #ffffff !important;
+    }
+    body:not(.light-mode) select option {
+      color: #ffffff !important;
+      background: #0f172a !important;
+    }
+    
+    body.light-mode .logo-text h1 {
+      background: linear-gradient(135deg, var(--text-primary) 40%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    body.light-mode .nav-item button:hover {
+      background: rgba(99, 102, 241, 0.08);
+    }
+    
+    body.light-mode .cie-inputs-grid {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    
+    body.light-mode .target-grades-table {
+      background: rgba(0, 0, 0, 0.02);
+    }
+    
+    body.light-mode .control-actions {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    
+    body.light-mode .btn-qty:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    
+    body.light-mode .gauge-track {
+      stroke: rgba(0, 0, 0, 0.06);
+    }
+    
+    body.light-mode .chart-bar-track {
+      background: rgba(0, 0, 0, 0.06);
+    }
+    
+    body.light-mode .curriculum-select:disabled {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+    
+    body.light-mode .card-header-row:hover {
+      background: rgba(99, 102, 241, 0.04);
+    }
+    
+    body.light-mode .advice-box.safe {
+      color: #047857;
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+    body.light-mode .advice-box.warning {
+      color: #b45309;
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+    body.light-mode .advice-box.danger {
+      color: #b91c1c;
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+    
+    body.light-mode ::placeholder {
+      color: var(--text-tertiary);
+      opacity: 0.7;
+    }
+    
     /* Base Reset */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -1209,7 +1309,7 @@
       z-index: 101;
     }
     
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .menu-toggle {
         display: flex;
       }
@@ -1331,7 +1431,7 @@
     .collapsible-card {
       position: relative;
       border: 1px solid var(--border-glass);
-      background: var(--card-bg);
+      background: var(--bg-glass-card);
       border-radius: var(--radius-md);
       overflow: hidden;
       transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
@@ -1420,7 +1520,7 @@
       width: 45px;
       background: transparent;
       border: none;
-      color: #fff;
+      color: var(--text-primary);
       text-align: center;
       font-weight: 700;
       font-size: 12px;
@@ -1475,22 +1575,25 @@
     /* Auth Screen Styles */
     .auth-screen {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
+      top: 0; left: 0; width: 100%; height: 100%;
       background: var(--bg-primary);
+      overflow-y: auto;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       z-index: 9999;
+      padding: 24px 16px;
     }
     .auth-card {
       background: var(--bg-glass-card);
       border: 1px solid var(--border-glass);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      padding: 40px;
+      padding: 32px 24px;
       border-radius: 24px;
       width: 100%;
       max-width: 420px;
+      margin: auto;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
     .auth-title {
@@ -1504,7 +1607,7 @@
       color: var(--text-secondary);
       font-size: 14px;
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
     .auth-form-group {
       margin-bottom: 16px;
@@ -1520,16 +1623,16 @@
       width: 100%;
       padding: 12px 16px;
       border-radius: 12px;
-      background: rgba(15, 23, 42, 0.6);
+      background: var(--bg-primary);
       border: 1px solid var(--border-glass);
-      color: #fff;
+      color: var(--text-primary);
       font-family: inherit;
       transition: all 0.2s;
     }
     .auth-form-group input:focus {
       outline: none;
       border-color: var(--border-glass-focus);
-      background: rgba(15, 23, 42, 0.9);
+      background: var(--bg-secondary);
     }
     .auth-btn {
       width: 100%;
@@ -1562,13 +1665,174 @@
     .auth-toggle span:hover {
       text-decoration: underline;
     }
+
+    /* Responsive & Layout Enhancements for Mobile, Tablet, and Desktop */
+    .menu-toggle {
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s, border-color 0.3s;
+    }
+    .sidebar-open .menu-toggle {
+      left: 224px !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      box-shadow: none !important;
+    }
+    .sidebar-open .menu-toggle .icon-hamburger {
+      display: none !important;
+    }
+    .sidebar-open .menu-toggle .icon-close {
+      display: block !important;
+    }
+    .course-name-title {
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 1024px) {
+      .top-bar {
+        padding-left: 60px;
+      }
+      .card-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px;
+      }
+      .card-header-row > div:first-child {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .header-metrics-group {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-left: 36px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .curriculum-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        gap: 20px;
+      }
+      .curriculum-controls {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .curriculum-select-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .curriculum-select-group label {
+        font-size: 11px;
+      }
+      .curriculum-select {
+        width: 100%;
+      }
+      #btnAddCourse {
+        grid-column: 1 / 2;
+        width: 100%;
+        justify-content: center;
+      }
+      #btnResetSemester {
+        grid-column: 2 / 3;
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .top-bar {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 16px;
+        margin-top: 40px;
+      }
+      .welcome-section h2 {
+        font-size: 24px;
+      }
+      .profile-section {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .stat-card {
+        min-height: 140px;
+        padding: 20px;
+      }
+      .stat-value {
+        font-size: 30px;
+      }
+      .course-card {
+        padding: 20px;
+      }
+      .cie-inputs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .modal-container {
+        padding: 24px 16px;
+        width: 95%;
+      }
+      .gpa-table th, .gpa-table td {
+        padding: 12px 8px;
+        font-size: 12px;
+      }
+      .auth-card {
+        padding: 24px 20px;
+        margin: 16px;
+      }
+      .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .curriculum-controls {
+        grid-template-columns: 1fr;
+      }
+      #btnAddCourse {
+        grid-column: 1;
+      }
+      #btnResetSemester {
+        grid-column: 1;
+      }
+      .header-metrics-group {
+        margin-left: 0;
+      }
+      .cie-inputs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .rating-star {
+      transition: color 0.15s ease, transform 0.15s ease;
+      display: inline-block;
+    }
+    .rating-star:hover {
+      transform: scale(1.25);
+      color: #fbbf24;
+    }
 </style>
 </head>
 <body>
   
   <!-- Auth Screen -->
   <div id="authScreen" class="auth-screen">
-    <div class="auth-card">
+    <div class="auth-card" style="position: relative;">
+      <!-- Theme Toggle Button inside Auth Card -->
+      <button class="theme-toggle-btn" onclick="toggleTheme()" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); transition: background-color 0.2s, transform 0.2s; font-size: 16px;">
+        🌙
+      </button>
       <div style="text-align: center; margin-bottom: 20px;">
         <div style="background: rgba(99, 102, 241, 0.1); width: 64px; height: 64px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; color: var(--accent-primary);">
           🎓
@@ -1588,7 +1852,7 @@
         </div>
         <div class="auth-form-group">
           <label for="regBranch">Branch</label>
-          <select id="regBranch" style="width: 100%; padding: 12px 16px; border-radius: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass); color: #fff; font-family: inherit;">
+          <select id="regBranch" style="width: 100%; padding: 12px 16px; border-radius: 12px; background: var(--bg-primary); border: 1px solid var(--border-glass); color: var(--text-primary); font-family: inherit;">
             <option value="AT" style="color: black;">Architecture (AT)</option>
             <option value="AD" style="color: black;">Artificial Intelligence & Data Science (AD)</option>
             <option value="BT" style="color: black;">Biotechnology (BT)</option>
@@ -1616,6 +1880,15 @@
         <input type="password" id="regPassword" placeholder="••••••••">
       </div>
       
+      <!-- Captcha Option -->
+      <div class="auth-form-group" style="margin-bottom: 20px;">
+        <label for="regCaptcha" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>Enter Captcha (Current Time as HHMM)</span>
+          <span id="captchaDisplayBadge" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); padding: 4px 10px; border-radius: 6px; font-weight: 700; font-family: monospace; letter-spacing: 1px; font-size: 14px; border: 1px dashed var(--accent-primary);">12:34</span>
+        </label>
+        <input type="text" id="regCaptcha" placeholder="e.g. 1234" maxlength="5">
+      </div>
+      
       <div id="forgotPasswordContainer" style="text-align: right; margin-bottom: 20px;">
         <span onclick="handleForgotPassword()" style="color: var(--accent-primary); font-size: 13px; cursor: pointer;">Forgot Password?</span>
       </div>
@@ -1632,8 +1905,13 @@
     
     <!-- Mobile Sidebar Trigger -->
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu" style="position: fixed; top: 16px; left: 16px;">
-      <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- Hamburger Icon -->
+      <svg class="icon-hamburger" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+      <!-- Close Icon -->
+      <svg class="icon-close" style="width: 24px; height: 24px; display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
     
@@ -1683,6 +1961,12 @@
               Academic Rules
             </button>
           </li>
+          <li class="nav-item" data-tab="feedback">
+            <button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              Feedback & Support
+            </button>
+          </li>
         </ul>
       </nav>
       
@@ -1706,6 +1990,10 @@
         </div>
         
         <div class="profile-section">
+          <!-- Theme Toggle Button inside Dashboard Header -->
+          <button class="theme-toggle-btn" onclick="toggleTheme()" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); transition: background-color 0.2s, transform 0.2s; font-size: 16px; margin-right: 8px;">
+            🌙
+          </button>
           <span class="semester-badge" id="semesterBadgeHeader">Semester 3</span>
           <div id="authContent" style="display: flex; align-items: center; gap: 12px;">
              <!-- Will be populated by JS -->
@@ -1713,74 +2001,74 @@
         </div>
       </header>
       
-      <!-- Curriculum Selection Bar -->
-      <div class="curriculum-bar">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="background: rgba(99, 102, 241, 0.1); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--accent-primary);">
-            📚
-          </div>
-          <div>
-            <h4 style="font-size: 14px; font-weight: 700;">Workspace Selection</h4>
-            <p style="font-size: 12px; color: var(--warning); font-weight: 600;">⚠️ Note: Please add your courses and details manually.</p>
-          </div>
-        </div>
-        
-        <div class="curriculum-controls">
-          <div class="curriculum-select-group">
-            <label>Branch:</label>
-            <select id="branchSelect" class="curriculum-select" disabled>
-              <option value="" disabled selected>Select Branch</option>
-              <option value="AT">Architecture (AT)</option>
-              <option value="AD">Artificial Intelligence & Data Science (AD)</option>
-              <option value="BT">Biotechnology (BT)</option>
-              <option value="CH">Chemical Engineering (CH)</option>
-              <option value="CV">Civil Engineering (CV)</option>
-              <option value="CS">Computer Science & Engineering (CS)</option>
-              <option value="CI">Computer Science & Engineering (AI & ML) (CI)</option>
-              <option value="EC">Electronics & Communication Engineering (EC)</option>
-              <option value="EE">Electrical & Electronics Engineering (EE)</option>
-              <option value="EI">Electronics & Instrumentation Engineering (EI)</option>
-              <option value="ET">Electronics & Telecommunication Engineering (ET)</option>
-              <option value="IM">Industrial Engineering & Management (IM)</option>
-              <option value="IS">Information Science & Engineering (IS)</option>
-              <option value="ME">Mechanical Engineering (ME)</option>
-            </select>
-          </div>
-          
-          <div class="curriculum-select-group">
-            <label>Sem/Cycle:</label>
-            <select id="semesterSelect" class="curriculum-select">
-              <option value="" disabled selected>Select Sem/Cycle</option>
-              <optgroup label="First Year Cycles">
-                <option value="P">Physics Cycle</option>
-                <option value="C">Chemistry Cycle</option>
-              </optgroup>
-              <optgroup label="Higher Semesters">
-                <option value="3">3rd Semester</option>
-                <option value="4">4th Semester</option>
-                <option value="5">5th Semester</option>
-                <option value="6">6th Semester</option>
-                <option value="7">7th Semester (Custom)</option>
-                <option value="8">8th Semester (Custom)</option>
-              </optgroup>
-            </select>
-          </div>
-          
-          <button class="action-btn" id="btnAddCourse" style="padding: 8px 16px; font-size: 13px; border-radius: 6px;">
-            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            Add Course
-          </button>
-          
-          <button class="action-btn secondary" id="btnResetSemester" style="padding: 8px 16px; font-size: 13px; border-radius: 6px; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger);">
-            Clear All Courses
-          </button>
-        </div>
-      </div>
-      
       <!-- ================= DASHBOARD TAB ================= -->
       <section class="tab-panel active" id="tab-dashboard">
+        
+        <!-- Curriculum Selection Bar -->
+        <div class="curriculum-bar">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(99, 102, 241, 0.1); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--accent-primary);">
+              📚
+            </div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 700;">Workspace Selection</h4>
+              <p style="font-size: 12px; color: var(--warning); font-weight: 600;">⚠️ Note: Please add your courses and details manually.</p>
+            </div>
+          </div>
+          
+          <div class="curriculum-controls">
+            <div class="curriculum-select-group">
+              <label>Branch:</label>
+              <select id="branchSelect" class="curriculum-select" disabled>
+                <option value="" disabled selected>Select Branch</option>
+                <option value="AT">Architecture (AT)</option>
+                <option value="AD">Artificial Intelligence & Data Science (AD)</option>
+                <option value="BT">Biotechnology (BT)</option>
+                <option value="CH">Chemical Engineering (CH)</option>
+                <option value="CV">Civil Engineering (CV)</option>
+                <option value="CS">Computer Science & Engineering (CS)</option>
+                <option value="CI">Computer Science & Engineering (AI & ML) (CI)</option>
+                <option value="EC">Electronics & Communication Engineering (EC)</option>
+                <option value="EE">Electrical & Electronics Engineering (EE)</option>
+                <option value="EI">Electronics & Instrumentation Engineering (EI)</option>
+                <option value="ET">Electronics & Telecommunication Engineering (ET)</option>
+                <option value="IM">Industrial Engineering & Management (IM)</option>
+                <option value="IS">Information Science & Engineering (IS)</option>
+                <option value="ME">Mechanical Engineering (ME)</option>
+              </select>
+            </div>
+            
+            <div class="curriculum-select-group">
+              <label>Sem/Cycle:</label>
+              <select id="semesterSelect" class="curriculum-select">
+                <option value="" disabled selected>Select Sem/Cycle</option>
+                <optgroup label="First Year Cycles">
+                  <option value="P">Physics Cycle</option>
+                  <option value="C">Chemistry Cycle</option>
+                </optgroup>
+                <optgroup label="Higher Semesters">
+                  <option value="3">3rd Semester</option>
+                  <option value="4">4th Semester</option>
+                  <option value="5">5th Semester</option>
+                  <option value="6">6th Semester</option>
+                  <option value="7">7th Semester</option>
+                  <option value="8">8th Semester</option>
+                </optgroup>
+              </select>
+            </div>
+            
+            <button class="action-btn" id="btnAddCourse" style="padding: 8px 16px; font-size: 13px; border-radius: 6px;">
+              <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add Course
+            </button>
+            
+            <button class="action-btn secondary" id="btnResetSemester" style="padding: 8px 16px; font-size: 13px; border-radius: 6px; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger);">
+              Clear All Courses
+            </button>
+          </div>
+        </div>
         
         <!-- Stats Summary Card Grid -->
         <div class="stats-grid">
@@ -1876,9 +2164,17 @@
       <!-- ================= CIE TAB ================= -->
       <section class="tab-panel" id="tab-cie">
         
-        <div class="panel-header">
-          <h3 class="panel-title">CIE Marks Tracker & SEE Targets</h3>
-          <span style="font-size: 13px; color: var(--text-secondary);">CIE minimum score is <strong>20/50 (40%)</strong> to qualify for examinations.</span>
+        <div class="panel-header" style="flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h3 class="panel-title">CIE Marks Tracker & SEE Targets</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">CIE minimum score is <strong>20/50 (40%)</strong> to qualify for examinations.</p>
+          </div>
+          <button class="action-btn secondary" onclick="exportCieToExcel()" style="display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 8px 16px;">
+            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            Export to Excel
+          </button>
         </div>
         
         <div class="cie-list" id="cieGrid">
@@ -1894,9 +2190,17 @@
           
           <!-- Left: GPA Planner Table -->
           <div class="glass-panel">
-            <div class="panel-header">
-              <h3 class="panel-title">Semester SGPA Calculator</h3>
-              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Adjust expected SEE marks (out of 100) to see predicted grades and SGPA.</p>
+            <div class="panel-header" style="margin-bottom: 24px;">
+              <h3 class="panel-title" style="margin: 0;">Semester SGPA Calculator</h3>
+              <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">Adjust expected SEE marks (out of 100) to see predicted grades and SGPA.</p>
+            </div>
+            
+            <!-- Academic Tip Banner -->
+            <div class="gpa-tip-banner" style="background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px;">
+              <span style="font-size: 18px; line-height: 1;">💡</span>
+              <div style="font-size: 12.5px; line-height: 1.5; color: var(--text-secondary);">
+                <strong style="color: var(--accent-primary);">Academic Tip:</strong> Semester End Exam (SEE) marks are entered out of 100 and scaled down to 50% for final grade evaluations. To secure higher grade points, target a balanced performance in both Continuous Internal Evaluation (CIE) and SEE.
+              </div>
             </div>
             
             <div style="overflow-x: auto;">
@@ -1958,47 +2262,67 @@
         
         <div class="glass-panel">
           <div class="panel-header">
-            <h3 class="panel-title">SIT Tumkur - Academic Rules & Regulations (2025-26)</h3>
-            <span class="semester-badge">Autonomous Institution</span>
+            <h3 class="panel-title">SIT Tumkur - Evaluation Rules & Grading Guidelines</h3>
+            <span class="semester-badge">Official Schemes</span>
           </div>
           
-          <div class="rules-grid">
+          <div class="rules-grid" style="margin-bottom: 24px;">
             
+            <!-- Card 1: Internal Assessment (CIE) -->
             <div class="rules-card">
-              <h3>Attendance Regulations</h3>
+              <h3 style="border-left-color: #a855f7; color: #a855f7;">📝 INTERNAL ASSESSMENT (CIE)</h3>
               <ul>
-                <li><strong>Minimum Attendance:</strong> A student must maintain a minimum of <strong>85% attendance</strong> in each course in a semester to be eligible to appear for the Semester End Examination (SEE).</li>
-                <li><strong>Condonation Criteria:</strong> The Principal may condone attendance shortage up to <strong>10% (down to 75% minimum)</strong> on recommendation of the Head of the Department (HoD) for genuine reasons (medical emergencies or participation in national/international sports/co-curricular activities).</li>
-                <li><strong>Supporting Documents:</strong> To claim condonation, official medical certificates or representation letters must be submitted within 3 working days of returning to classes.</li>
-                <li><strong>Detention Consequences (NE):</strong> Students having <strong>less than 75% attendance</strong>, or between 75% and 84% without approved condonation, are declared "Not Eligible" (NE). They are detained in that subject and must repeat it.</li>
+                <li>Enter marks exactly as conducted in college.</li>
+                <li>Do NOT enter reduced or scaled marks.</li>
+                <li>The system automatically handles scaling internally.</li>
               </ul>
             </div>
             
+            <!-- Card 2: Test Rules (Out of 50 Each) -->
             <div class="rules-card">
-              <h3>Continuous Internal Evaluation (CIE)</h3>
+              <h3 style="border-left-color: #3b82f6; color: #3b82f6;">📋 TEST RULES (OUT OF 50 EACH)</h3>
               <ul>
-                <li><strong>Total Weightage:</strong> CIE constitutes <strong>50% (50 marks)</strong> of the total assessment for a course.</li>
-                <li><strong>Theory Courses Components:</strong> Typically assessed through:
-                  <br>- Two Written IA Tests (max 20 marks each).
-                  <br>- Assignments / Quizzes / Mini-projects (max 10 marks total).
-                </li>
-                <li><strong>CIE Passing Threshold:</strong> A student must obtain a minimum of <strong>40% in CIE</strong> (i.e., <strong>20 out of 50 marks</strong>) to be eligible to appear for the Semester End Examination (SEE) in that course.</li>
-                <li><strong>Low CIE Status:</strong> Students scoring less than 20/50 in CIE are declared ineligible (NE) to write the exam and are detained in the course.</li>
+                <li>Test 1 + Test 2 are conducted for 100 marks.</li>
+                <li>Minimum requirement: (Test 1 + Test 2) must be &ge; 40.</li>
+                <li>Absence: Compensatory marks will replace Test 1 or 2.</li>
+                <li>If considered total &lt; 40 &rarr; <span style="color: var(--danger); font-weight: 700;">❌ Not Eligible</span>.</li>
               </ul>
             </div>
             
+            <!-- Card 3: Quiz & ABL Rules (Out of 20 Each) -->
             <div class="rules-card">
-              <h3>Semester End Examination (SEE)</h3>
+              <h3 style="border-left-color: #f59e0b; color: #f59e0b;">⚡ QUIZ & ABL RULES (OUT OF 20 EACH)</h3>
               <ul>
-                <li><strong>Total Weightage:</strong> SEE constitutes <strong>50% (50 marks scaled down from 100)</strong> of the total assessment.</li>
-                <li><strong>SEE Passing Threshold:</strong> A student must obtain a minimum of <strong>40% in SEE</strong> (i.e., <strong>40 out of 100 marks</strong>, which scales to <strong>20 out of 50 marks</strong>) to pass the course.</li>
-                <li><strong>Cumulative Passing Criteria:</strong> To pass a course, the overall combined score of CIE and SEE must be at least <strong>40% (40 out of 100 marks)</strong>.</li>
+                <li>Quiz 1 + Quiz 2 (40 marks) &rarr; Min total &ge; 16.</li>
+                <li>ABL 1 + ABL 2 (40 marks) &rarr; Min total &ge; 16.</li>
+                <li>Failure to meet minimums &rarr; <span style="color: var(--danger); font-weight: 700;">❌ Not Eligible</span>.</li>
               </ul>
             </div>
             
+            <!-- Card 4: Practical Rules (Lab) -->
             <div class="rules-card">
-              <h3>Grading System (10-Point Absolute Scale)</h3>
-              <table class="table-rules">
+              <h3 style="border-left-color: #10b981; color: #10b981;">🧪 PRACTICAL RULES (LAB)</h3>
+              <ul>
+                <li>Lab Records (350 marks) &rarr; Min total &ge; 140 (40%).</li>
+                <li>Lab Test (15 marks) &rarr; Min score &ge; 6.</li>
+                <li>Failure to meet either &rarr; <span style="color: var(--danger); font-weight: 700;">❌ Not Eligible</span>.</li>
+              </ul>
+            </div>
+            
+            <!-- Card 5: Final Eligibility & SEE -->
+            <div class="rules-card">
+              <h3 style="border-left-color: #8b5cf6; color: #8b5cf6;">🎓 FINAL ELIGIBILITY & SEE</h3>
+              <ul>
+                <li>Minimum final CIE to write SEE: 20 / 50.</li>
+                <li>SEE Passing: Minimum 36 / 100.</li>
+                <li>Failing SEE &rarr; Grade becomes F automatically.</li>
+              </ul>
+            </div>
+            
+            <!-- Card 6: Grading System (10-Point Absolute Scale) -->
+            <div class="rules-card">
+              <h3 style="border-left-color: #ec4899; color: #ec4899;">📊 GRADING SYSTEM (10-POINT SCALE)</h3>
+              <table class="table-rules" style="width: 100%; border-collapse: collapse; font-size: 13px;">
                 <thead>
                   <tr>
                     <th>Marks Range</th>
@@ -2016,33 +2340,39 @@
                   </tr>
                   <tr>
                     <td>80 - 89</td>
-                    <td><strong>A</strong></td>
+                    <td><strong>A+</strong></td>
                     <td>Excellent</td>
                     <td><strong>9</strong></td>
                   </tr>
                   <tr>
                     <td>70 - 79</td>
-                    <td><strong>B</strong></td>
+                    <td><strong>A</strong></td>
                     <td>Very Good</td>
                     <td><strong>8</strong></td>
                   </tr>
                   <tr>
                     <td>60 - 69</td>
-                    <td><strong>C</strong></td>
+                    <td><strong>B+</strong></td>
                     <td>Good</td>
                     <td><strong>7</strong></td>
                   </tr>
                   <tr>
-                    <td>50 - 59</td>
-                    <td><strong>D</strong></td>
-                    <td>Average</td>
+                    <td>55 - 59</td>
+                    <td><strong>B</strong></td>
+                    <td>Above Average</td>
                     <td><strong>6</strong></td>
                   </tr>
                   <tr>
-                    <td>40 - 49</td>
-                    <td><strong>E</strong></td>
-                    <td>Poor</td>
+                    <td>50 - 54</td>
+                    <td><strong>C</strong></td>
+                    <td>Average</td>
                     <td><strong>5</strong></td>
+                  </tr>
+                  <tr>
+                    <td>40 - 49</td>
+                    <td><strong>P</strong></td>
+                    <td>Pass</td>
+                    <td><strong>4</strong></td>
                   </tr>
                   <tr>
                     <td>&lt; 40</td>
@@ -2052,18 +2382,72 @@
                   </tr>
                 </tbody>
               </table>
-              <div style="margin-top: 12px; font-size: 12px; color: var(--text-secondary);">
-                * Note: CGPA is converted to percentage by multiplying it by 10 (CGPA × 10).
-              </div>
             </div>
             
           </div>
+          
+          <!-- SGPA Calculation Highlight Box -->
+          <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-lg); padding: 20px; font-family: 'Outfit', sans-serif;">
+            <h4 style="color: #10b981; font-weight: 700; font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+              SGPA Calculation
+            </h4>
+            <div style="font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
+              SGPA = &Sigma; (Grade Points &times; Credits) / &Sigma; Credits
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+              * F and NE grades contribute 0 grade points
+            </div>
+          </div>
+          
         </div>
-        
       </section>
       
+      <!-- ================= FEEDBACK & SUPPORT TAB ================= -->
+      <section class="tab-panel" id="tab-feedback">
+        <div class="glass-panel" style="max-width: 600px; margin: 0 auto;">
+          <div class="panel-header">
+            <h3 class="panel-title">Feedback & Bug Report</h3>
+          </div>
+          <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5;">
+            Have a suggestion, found a bug, or want to request a feature? Let us know! The site creator will review your feedback directly.
+          </p>
+          
+          <form id="feedbackForm" onsubmit="submitFeedback(event)">
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label for="feedbackCategory" style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px;">Category</label>
+              <select id="feedbackCategory" required style="width: 100%; padding: 12px; border-radius: 8px; background: var(--bg-primary); border: 1px solid var(--border-glass); color: var(--text-primary); font-family: inherit;">
+                <option value="General Feedback">General Feedback</option>
+                <option value="Bug Report">Bug Report</option>
+                <option value="Suggestion">Suggestion</option>
+                <option value="Grade System Correction">Grade System Correction</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px;">Rating</label>
+              <div style="display: flex; gap: 8px; font-size: 24px; color: #aaa; cursor: pointer;">
+                <span class="rating-star" data-value="1" onclick="setFeedbackRating(1)">★</span>
+                <span class="rating-star" data-value="2" onclick="setFeedbackRating(2)">★</span>
+                <span class="rating-star" data-value="3" onclick="setFeedbackRating(3)">★</span>
+                <span class="rating-star" data-value="4" onclick="setFeedbackRating(4)">★</span>
+                <span class="rating-star" data-value="5" onclick="setFeedbackRating(5)">★</span>
+              </div>
+              <input type="hidden" id="feedbackRating" value="0">
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label for="feedbackMessage" style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px;">Your Message</label>
+              <textarea id="feedbackMessage" required rows="5" placeholder="Describe your experience, report a bug, or write your feedback here..." style="width: 100%; padding: 12px; border-radius: 8px; background: var(--bg-primary); border: 1px solid var(--border-glass); color: var(--text-primary); font-family: inherit; resize: vertical; line-height: 1.5;"></textarea>
+            </div>
+            
+            <button type="submit" class="action-btn" id="btnSubmitFeedback" style="width: 100%; padding: 14px; border-radius: 8px;">
+              Send Feedback
+            </button>
+          </form>
+        </div>
+      </section>
 
-      
     </main>
   </div>
   
@@ -2140,6 +2524,35 @@
 
   <!-- JavaScript Code for Tracker Logic -->
   <script>
+    // Theme Switcher Logic (Immediate Execution)
+    function initTheme() {
+      const savedTheme = localStorage.getItem('sit_theme') || 'dark';
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        updateThemeToggleIcons('light');
+      } else {
+        document.body.classList.remove('light-mode');
+        updateThemeToggleIcons('dark');
+      }
+    }
+
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-mode');
+      const theme = isLight ? 'light' : 'dark';
+      localStorage.setItem('sit_theme', theme);
+      updateThemeToggleIcons(theme);
+      showToast(`${theme.charAt(0).toUpperCase() + theme.slice(1)} Mode activated!`, isLight ? "☀️" : "🌙");
+    }
+
+    function updateThemeToggleIcons(theme) {
+      const icons = document.querySelectorAll('.theme-toggle-btn');
+      icons.forEach(btn => {
+        btn.textContent = theme === 'light' ? '☀️' : '🌙';
+      });
+    }
+    
+    // Call initTheme immediately to prevent flash
+    initTheme();
     // Curriculum subjects database
     const CURRICULUM_DATABASE = {};
     
@@ -2237,7 +2650,7 @@
         const t1 = parseFloat(m.test1) || 0;
         const t2 = parseFloat(m.test2) || 0;
         const tSum = t1 + t2;
-        const tReduced = (tSum / 100) * 34;
+        const tReduced = Math.round((tSum / 100) * 34);
         const tPass = tSum >= 40;
         if (!tPass) isEligible = false;
         theoryRaw += tReduced;
@@ -2247,7 +2660,7 @@
           const q1 = parseFloat(m.quiz1) || 0;
           const q2 = parseFloat(m.quiz2) || 0;
           const qSum = q1 + q2;
-          const qReduced = (qSum / 40) * 8;
+          const qReduced = Math.round((qSum / 40) * 8);
           const qPass = qSum >= 16;
           if (!qPass) isEligible = false;
           theoryRaw += qReduced;
@@ -2256,7 +2669,7 @@
           const a1 = parseFloat(m.abl1) || 0;
           const a2 = parseFloat(m.abl2) || 0;
           const aSum = a1 + a2;
-          const aReduced = (aSum / 40) * 8;
+          const aReduced = Math.round((aSum / 40) * 8);
           const aPass = aSum >= 16;
           if (!aPass) isEligible = false;
           theoryRaw += aReduced;
@@ -2265,7 +2678,7 @@
           const int1 = parseFloat(m.quiz1) || 0;
           const int2 = parseFloat(m.abl1) || 0;
           const intSum = int1 + int2;
-          const intReduced = (intSum / 40) * 16;
+          const intReduced = Math.round((intSum / 40) * 16);
           const intPass = intSum >= 16;
           if (!intPass) isEligible = false;
           theoryRaw += intReduced;
@@ -2279,7 +2692,7 @@
         const recordSum = recordList.reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
         const recordMax = recordList.length * 35;
         const recordReducedMax = type === 'IPCC' ? 15 : 35;
-        const recordReduced = recordMax > 0 ? (recordSum / recordMax) * recordReducedMax : 0;
+        const recordReduced = recordMax > 0 ? Math.round((recordSum / recordMax) * recordReducedMax) : 0;
         const recordPass = recordMax > 0 ? (recordSum >= 0.4 * recordMax) : true;
         if (!recordPass) isEligible = false;
         practicalRaw += recordReduced;
@@ -2289,7 +2702,7 @@
         const testSum = testList.reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
         const testMax = testList.length * 15;
         const testReducedMax = type === 'IPCC' ? 10 : 15;
-        const testReduced = testMax > 0 ? (testSum / testMax) * testReducedMax : 0;
+        const testReduced = testMax > 0 ? Math.round((testSum / testMax) * testReducedMax) : 0;
         const testPass = testMax > 0 ? (testSum >= 0.4 * testMax) : true;
         if (!testPass) isEligible = false;
         practicalRaw += testReduced;
@@ -2450,7 +2863,8 @@
       attendance: { title: "Attendance Tracker", sub: "Track conducted/attended classes and compute shortages." },
       cie: { title: "CIE Marks Tracker", sub: "Monitor sessional assessment totals and target requirements." },
       gpa: { title: "GPA & Semester Planner", sub: "Predict your SGPA and semester performance." },
-      rules: { title: "SIT Academic Rules", sub: "Official rules and evaluation norms for autonomous schemes." }
+      rules: { title: "SIT Academic Rules", sub: "Official rules and evaluation norms for autonomous schemes." },
+      feedback: { title: "Feedback & Support", sub: "Send feedback, report bugs, or request features directly to the site creator." }
     };
     
     navItems.forEach(item => {
@@ -2471,6 +2885,7 @@
         
         // Close sidebar on mobile
         document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('appContainer').classList.remove('sidebar-open');
         
         // Render current panel updates
         renderAll();
@@ -2480,14 +2895,17 @@
     // Toggle Mobile Menu
     document.getElementById('menuToggle').addEventListener('click', (e) => {
       e.stopPropagation();
-      document.getElementById('sidebar').classList.toggle('open');
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
+      document.getElementById('appContainer').classList.toggle('sidebar-open', sidebar.classList.contains('open'));
     });
     
     // Close sidebar on outside click
     document.addEventListener('click', (e) => {
       const sidebar = document.getElementById('sidebar');
-      if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target.id !== 'menuToggle') {
+      if (window.innerWidth <= 1024 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && !e.target.closest('#menuToggle')) {
         sidebar.classList.remove('open');
+        document.getElementById('appContainer').classList.remove('sidebar-open');
       }
     });
     
@@ -2680,7 +3098,7 @@
       const gaugePercent = document.getElementById(`gauge-percent-${courseId}`);
       if (gaugePercent) {
         gaugePercent.style.color = statusColor;
-        gaugePercent.textContent = `${attStats.percent.toFixed(0)}%`;
+        gaugePercent.textContent = `${attStats.percent}%`;
       }
       
       const gaugeLabel = document.getElementById(`gauge-label-${courseId}`);
@@ -2778,35 +3196,39 @@
       }
       
       const percent = (attended / conducted) * 100;
+      const roundedPercent = Math.round(percent);
       
-      if (percent >= 85) {
+      if (roundedPercent >= 85) {
         // Safe: How many classes can they skip?
-        // Formula: A / (C + X) >= 0.85  => A / 0.85 >= C + X => X = floor(A/0.85 - C)
-        const skip = Math.floor((attended / 0.85) - conducted);
+        // Formula: A / (C + X) >= 0.845 => X = floor(A/0.845 - C)
+        const skip = Math.floor((attended / 0.845) - conducted);
         return {
-          percent: percent,
+          percent: roundedPercent,
+          rawPercent: percent,
           status: 'safe',
           statusText: 'Safe',
           advice: skip > 0 
             ? `You can skip up to <strong>${skip}</strong> classes and still stay safe above 85%.`
             : `You are in the safe zone. Do not skip the next class to maintain 85%.`
         };
-      } else if (percent >= 75) {
+      } else if (roundedPercent >= 75) {
         // Condonation Bracket: How many classes to attend to reach 85%?
-        // Formula: (A + Y) / (C + Y) >= 0.85 => A + Y >= 0.85C + 0.85Y => 0.15Y >= 0.85C - A => Y = ceil((0.85C - A)/0.15)
-        const attend = Math.ceil((0.85 * conducted - attended) / 0.15);
+        // Formula: (A + Y) / (C + Y) >= 0.845 => Y = ceil((0.845C - A)/0.155)
+        const attend = Math.ceil((0.845 * conducted - attended) / 0.155);
         return {
-          percent: percent,
+          percent: roundedPercent,
+          rawPercent: percent,
           status: 'warning',
           statusText: 'Condonation',
           advice: `Attendance shortage! You must attend the next <strong>${attend}</strong> classes in a row to reach 85%.`
         };
       } else {
         // Shortage (Detention): How many classes to reach 75% for condonation, and 85% for safe?
-        const attend75 = Math.ceil((0.75 * conducted - attended) / 0.25);
-        const attend85 = Math.ceil((0.85 * conducted - attended) / 0.15);
+        const attend75 = Math.ceil((0.745 * conducted - attended) / 0.255);
+        const attend85 = Math.ceil((0.845 * conducted - attended) / 0.155);
         return {
-          percent: percent,
+          percent: roundedPercent,
+          rawPercent: percent,
           status: 'danger',
           statusText: 'Critical Shortage',
           advice: `Detained! Attend next <strong>${attend75}</strong> classes to reach 75% (for medical appeal) or <strong>${attend85}</strong> to reach 85% safety.`
@@ -2817,17 +3239,18 @@
     // Grade predictions based on CIE + SEE
     function getFinalGrade(cieTotal, seeMarks) {
       if (cieTotal < 20) return { grade: 'F', points: 0, desc: 'Fail (Low CIE)' };
-      if (seeMarks < 40) return { grade: 'F', points: 0, desc: 'Fail (Low SEE)' };
+      if (seeMarks < 35) return { grade: 'F', points: 0, desc: 'Fail (Low SEE)' };
       
       const scaledSee = seeMarks / 2; // scale 100 to 50
       const total = cieTotal + scaledSee;
       
       if (total >= 90) return { grade: 'O', points: 10, desc: 'Outstanding' };
-      if (total >= 80) return { grade: 'A', points: 9, desc: 'Excellent' };
-      if (total >= 70) return { grade: 'B', points: 8, desc: 'Very Good' };
-      if (total >= 60) return { grade: 'C', points: 7, desc: 'Good' };
-      if (total >= 50) return { grade: 'D', points: 6, desc: 'Average' };
-      if (total >= 40) return { grade: 'E', points: 5, desc: 'Poor' };
+      if (total >= 80) return { grade: 'A+', points: 9, desc: 'Excellent' };
+      if (total >= 70) return { grade: 'A', points: 8, desc: 'Very Good' };
+      if (total >= 60) return { grade: 'B+', points: 7, desc: 'Good' };
+      if (total >= 55) return { grade: 'B', points: 6, desc: 'Above Average' };
+      if (total >= 50) return { grade: 'C', points: 5, desc: 'Average' };
+      if (total >= 40) return { grade: 'P', points: 4, desc: 'Pass' };
       return { grade: 'F', points: 0, desc: 'Fail (<40% Total)' };
     }
     
@@ -2835,11 +3258,12 @@
     function getTargets(cieTotal) {
       const grades = [
         { letter: 'O', minTotal: 90 },
-        { letter: 'A', minTotal: 80 },
-        { letter: 'B', minTotal: 70 },
-        { letter: 'C', minTotal: 60 },
-        { letter: 'D', minTotal: 50 },
-        { letter: 'E', minTotal: 40 }
+        { letter: 'A+', minTotal: 80 },
+        { letter: 'A', minTotal: 70 },
+        { letter: 'B+', minTotal: 60 },
+        { letter: 'B', minTotal: 55 },
+        { letter: 'C', minTotal: 50 },
+        { letter: 'P', minTotal: 40 }
       ];
       
       if (cieTotal < 20) {
@@ -2853,8 +3277,8 @@
         if (reqSee > 100) {
           return { ...g, reqSee: -1, status: 'Impossible (CIE too low)' };
         } else {
-          // You must secure at least 40 marks in SEE even if mathematically lower
-          const actualReq = Math.max(40, reqSee);
+          // You must secure at least 35 marks in SEE even if mathematically lower
+          const actualReq = Math.max(35, reqSee);
           return { ...g, reqSee: actualReq, status: 'Possible' };
         }
       });
@@ -2877,11 +3301,12 @@
         totalConducted += c.conducted;
       });
       const overallAttPct = totalConducted > 0 ? (totalAttended / totalConducted) * 100 : 100;
-      document.getElementById('overallAttendance').textContent = `${overallAttPct.toFixed(1)}%`;
+      const roundedOverallAtt = Math.round(overallAttPct);
+      document.getElementById('overallAttendance').textContent = `${roundedOverallAtt}%`;
       
       const attBadge = document.getElementById('attendanceBadge');
-      attBadge.textContent = overallAttPct >= 85 ? "Safe" : (overallAttPct >= 75 ? "Condonation" : "Shortage");
-      attBadge.className = `stat-badge ${overallAttPct >= 85 ? 'success' : (overallAttPct >= 75 ? 'warning' : 'danger')}`;
+      attBadge.textContent = roundedOverallAtt >= 85 ? "Safe" : (roundedOverallAtt >= 75 ? "Condonation" : "Shortage");
+      attBadge.className = `stat-badge ${roundedOverallAtt >= 85 ? 'success' : (roundedOverallAtt >= 75 ? 'warning' : 'danger')}`;
       
       // 2. Average CIE
       let cieSum = 0;
@@ -2901,7 +3326,9 @@
       let creditsSum = 0;
       courses.forEach(c => {
         const cieTotal = c.cieTotal !== undefined ? c.cieTotal : (c.cie1 + c.cie2 + c.cieQuiz);
-        const grading = getFinalGrade(cieTotal, c.seeExpected);
+        const grading = c.credits === 0 
+          ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
+          : getFinalGrade(cieTotal, c.seeExpected);
         creditPointsSum += (grading.points * c.credits);
         creditsSum += c.credits;
       });
@@ -2913,7 +3340,13 @@
       if (gpaResultVal) {
         gpaResultVal.textContent = predictedSgpaVal.toFixed(2);
         const gpaResultDesc = document.getElementById('gpaResultDesc');
-        const anyF = courses.some(c => getFinalGrade((c.cieTotal !== undefined ? c.cieTotal : (c.cie1 + c.cie2 + c.cieQuiz)), c.seeExpected).grade === 'F');
+        const anyF = courses.some(c => {
+          const cieTotal = c.cieTotal !== undefined ? c.cieTotal : (c.cie1 + c.cie2 + c.cieQuiz);
+          const grading = c.credits === 0 
+            ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
+            : getFinalGrade(cieTotal, c.seeExpected);
+          return grading.grade === 'F' || grading.grade === 'NP';
+        });
         if (anyF) {
           gpaResultDesc.textContent = "Fail Risk! Correct subjects with low CIE or poor expected exam scores.";
           gpaResultDesc.style.color = "var(--danger)";
@@ -2922,6 +3355,97 @@
           gpaResultDesc.style.color = "#fff";
         }
       }
+    }
+
+    // Export CIE Data to CSV (Excel format)
+    function exportCieToExcel() {
+      if (courses.length === 0) {
+        showToast("No course data available to export.", "⚠️");
+        return;
+      }
+      
+      const headers = [
+        "Course Code",
+        "Course Name",
+        "Credits",
+        "Evaluation Type",
+        "CIE Component Breakdown",
+        "Total CIE (/50)",
+        "Eligibility",
+        "Expected SEE (/100)",
+        "Predicted Grade"
+      ];
+      
+      let csvContent = headers.map(h => `"${h.replace(/"/g, '""')}"`).join(",") + "\r\n";
+      
+      courses.forEach(c => {
+        const details = calculateCieDetails(c);
+        
+        let breakdown = [];
+        const m = c.cieMarks || {};
+        if (c.type === 'THEORY_ONLY' || c.type === 'IPCC' || c.type === 'LOW_THEORY') {
+          if (m.test1 !== undefined && m.test1 !== '') breakdown.push(`Test 1: ${m.test1}/50`);
+          if (m.test2 !== undefined && m.test2 !== '') breakdown.push(`Test 2: ${m.test2}/50`);
+          if (m.quiz1 !== undefined && m.quiz1 !== '') breakdown.push(`Quiz 1: ${m.quiz1}/20`);
+          if (m.quiz2 !== undefined && m.quiz2 !== '') breakdown.push(`Quiz 2: ${m.quiz2}/20`);
+          if (m.assignment1 !== undefined && m.assignment1 !== '') breakdown.push(`ABL 1: ${m.assignment1}/20`);
+          if (m.assignment2 !== undefined && m.assignment2 !== '') breakdown.push(`ABL 2: ${m.assignment2}/20`);
+        }
+        if (c.type === 'IPCC' || c.type === 'LAB_ONLY') {
+          if (m.labRecordValues && m.labRecordValues.length > 0) {
+            m.labRecordValues.forEach((v, idx) => {
+              if (v !== '') breakdown.push(`Lab Record ${idx+1}: ${v}`);
+            });
+          } else if (m.labRecords !== undefined && m.labRecords !== '') {
+            breakdown.push(`Lab Records: ${m.labRecords}`);
+          }
+          
+          if (m.labTestValues && m.labTestValues.length > 0) {
+            m.labTestValues.forEach((v, idx) => {
+              if (v !== '') breakdown.push(`Lab Test ${idx+1}: ${v}`);
+            });
+          } else if (m.labTest !== undefined && m.labTest !== '') {
+            breakdown.push(`Lab Test: ${m.labTest}`);
+          }
+        }
+        const breakdownStr = breakdown.join(" | ");
+        
+        const grading = c.credits === 0 
+          ? (details.cie >= 20 ? { grade: 'PP' } : { grade: 'NP' })
+          : getFinalGrade(details.cie, c.seeExpected);
+          
+        const row = [
+          c.code,
+          c.name,
+          c.credits,
+          c.type,
+          breakdownStr,
+          details.cie.toFixed(2),
+          details.isEligible ? "Eligible" : "Low CIE",
+          c.credits === 0 ? "N/A" : (c.seeExpected || 0),
+          grading.grade
+        ];
+        
+        csvContent += row.map(v => {
+          const str = String(v);
+          return `"${str.replace(/"/g, '""')}"`;
+        }).join(",") + "\r\n";
+      });
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      
+      const branch = document.getElementById('branchSelect').value || 'SIT';
+      const sem = document.getElementById('semesterSelect').value || 'Sem';
+      link.setAttribute("download", `${branch}_${sem}_CIE_Marks_Export.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      showToast("Data exported successfully!", "🟢");
     }
 
     // Render Dashboard Panels
@@ -2956,7 +3480,7 @@
           <div class="chart-bar-item">
             <div class="chart-bar-header">
               <span class="chart-bar-title">${c.name} (${c.code})</span>
-              <span style="font-weight: 600; color: ${barColor}">${attStats.percent.toFixed(1)}%</span>
+              <span style="font-weight: 600; color: ${barColor}">${attStats.percent}%</span>
             </div>
             <div class="chart-bar-track">
               <div class="chart-bar-fill" style="width: ${attStats.percent}%; background: ${barColor}"></div>
@@ -2983,7 +3507,7 @@
               <div class="alert-icon">${badgeIcon}</div>
               <div class="alert-content">
                 <h4>${c.code} - ${alertTitle}</h4>
-                <p>Attendance is at ${attStats.percent.toFixed(1)}%. ${attStats.advice.replace(/<\/?strong>/g, '')}</p>
+                <p>Attendance is at ${attStats.percent}%. ${attStats.advice.replace(/<\/?strong>/g, '')}</p>
               </div>
             </div>
           `;
@@ -3059,7 +3583,7 @@
                           stroke-dashoffset="${strokeDashoffset}"></circle>
                 </svg>
                 <div class="gauge-text">
-                  <span class="gauge-percent" id="gauge-percent-${c.id}" style="color: ${statusColor}">${attStats.percent.toFixed(0)}%</span>
+                  <span class="gauge-percent" id="gauge-percent-${c.id}" style="color: ${statusColor}">${attStats.percent}%</span>
                   <span class="gauge-label" id="gauge-label-${c.id}">${attStats.statusText}</span>
                 </div>
               </div>
@@ -3073,7 +3597,7 @@
                   <span>Conducted:</span>
                   <span class="val" id="stat-conducted-${c.id}">${c.conducted}</span>
                 </div>
-                <div class="info-row" style="margin-top: 4px; padding-top: 4px; border-top: 1px dashed rgba(255,255,255,0.05);">
+                <div class="info-row" style="margin-top: 4px; padding-top: 4px; border-top: 1px dashed var(--border-glass);">
                   <span>Target (85%):</span>
                   <span class="val" id="stat-target-${c.id}">${Math.ceil(c.conducted * 0.85)}</span>
                 </div>
@@ -3153,7 +3677,7 @@
                 <!-- SEE Output Box -->
                 <div class="header-badge see-box">
                   <span class="label">SEE</span>
-                  ${c.credits === 0 ? '<span style="font-weight: 700; color: #aaa; margin-top: 4px;">N/A</span>' : `<input type="number" min="0" max="100" class="see-input-header" value="${c.seeExpected || ''}" onchange="updateExpectedSee('${c.id}', this.value)" style="width: 45px; background: transparent; border: none; color: #fff; text-align: center; font-weight: 700;">`}
+                  ${c.credits === 0 ? '<span style="font-weight: 700; color: #aaa; margin-top: 4px;">N/A</span>' : `<input type="number" min="0" max="100" class="see-input-header" value="${c.seeExpected || ''}" onchange="updateExpectedSee('${c.id}', this.value)" style="width: 45px; background: transparent; border: none; color: var(--text-primary); text-align: center; font-weight: 700;">`}
                 </div>
                 
                 <!-- Grade/Status Badge -->
@@ -3223,17 +3747,19 @@
               <!-- Targets Table (Rendered in expanded pane as well) -->
               <div style="margin-top: 16px; display: ${c.credits === 0 ? 'none' : 'block'};">
                 <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Target SEE Marks required:</div>
-                <table class="target-grades-table">
-                  <thead>
-                    <tr>
-                      <th>Grade</th>
-                      <th>Required SEE Score (Out of 100)</th>
-                    </tr>
-                  </thead>
-                  <tbody id="targets-table-${c.id}">
-                    <!-- Rendered dynamically -->
-                  </tbody>
-                </table>
+                <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 8px;">
+                  <table class="target-grades-table">
+                    <thead>
+                      <tr>
+                        <th>Grade</th>
+                        <th>Required SEE Score (Out of 100)</th>
+                      </tr>
+                    </thead>
+                    <tbody id="targets-table-${c.id}">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               <button class="action-btn primary" onclick="analyseAndCalculate('${c.id}')" style="width: 100%; margin-top: 16px; padding: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); border: none; box-shadow: var(--shadow-md); color: #fff; border-radius: 6px; cursor: pointer;">
@@ -3305,7 +3831,7 @@
             <td>
               ${c.credits === 0 ? '<span style="color:#aaa;">N/A</span>' : `
               <input type="number" min="0" max="100" value="${c.seeExpected || ''}" 
-                     style="width: 70px; padding: 6px; background: var(--bg-primary); border: 1px solid var(--border-glass); color: #fff; border-radius: 4px; text-align: center; font-weight: 600;"
+                     style="width: 70px; padding: 6px; background: var(--bg-primary); border: 1px solid var(--border-glass); color: var(--text-primary); border-radius: 4px; text-align: center; font-weight: 600;"
                      oninput="updateMarks('${c.id}', 'seeExpected', this.value); updateGpaRowPrediction('${c.id}')">
               `}
             </td>
@@ -3442,8 +3968,7 @@
       const branch = document.getElementById('branchSelect').value;
       const sem = document.getElementById('semesterSelect').value;
       
-      const semText = (sem === 'P' || sem === 'C') ? `${sem} Cycle` : `Semester ${sem}`;
-      if (confirm(`Are you sure you want to reset all subjects and scores for ${branch} - ${semText}? This will erase your recorded attendance and CIE marks.`)) {
+      if (confirm("Are you sure you want to clear all courses? All the marks and attendance of all the courses will be deleted as you press OK.")) {
         courses = getDefaultCoursesFor(branch, sem);
         courses.forEach(c => initializeCourseState(c));
         saveSemesterData(branch, sem);
@@ -3867,18 +4392,40 @@
     
     let isSignUpMode = false;
 
+    function updateLiveTimeCaptcha() {
+        const badge = document.getElementById('captchaDisplayBadge');
+        if (!badge) return;
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        badge.textContent = `${hh}:${mm}`;
+    }
+
+    function setSignUpMode(signUp) {
+        isSignUpMode = signUp;
+        document.getElementById('signupFields').style.display = isSignUpMode ? 'block' : 'none';
+        document.getElementById('authTitle').innerText = isSignUpMode ? 'Create Account' : 'Sign In to EduTrack';
+        document.getElementById('authSubtitle').innerText = isSignUpMode ? 'Enter your details to get started.' : 'Welcome back! Please enter your details.';
+        document.getElementById('authSubmitBtn').innerText = isSignUpMode ? 'Create Account' : 'Sign In';
+        document.getElementById('forgotPasswordContainer').style.display = isSignUpMode ? 'none' : 'block';
+        document.getElementById('authToggleText').innerHTML = isSignUpMode 
+            ? `Already have an account? <span>Sign In</span>`
+            : `Don't have an account? <span>Sign Up</span>`;
+        
+        const captchaInput = document.getElementById('regCaptcha');
+        if (captchaInput) captchaInput.value = '';
+        updateLiveTimeCaptcha();
+    }
+
+    // Periodically update the live time captcha display
+    setInterval(updateLiveTimeCaptcha, 5000);
+    // Initialize immediately
+    setTimeout(updateLiveTimeCaptcha, 100);
+
     // Toggle between Sign In and Sign Up
     document.querySelector('.auth-toggle').addEventListener('click', (e) => {
         if(e.target.tagName.toLowerCase() === 'span') {
-            isSignUpMode = !isSignUpMode;
-            document.getElementById('signupFields').style.display = isSignUpMode ? 'block' : 'none';
-            document.getElementById('authTitle').innerText = isSignUpMode ? 'Create Account' : 'Sign In to EduTrack';
-            document.getElementById('authSubtitle').innerText = isSignUpMode ? 'Enter your details to get started.' : 'Welcome back! Please enter your details.';
-            document.getElementById('authSubmitBtn').innerText = isSignUpMode ? 'Create Account' : 'Sign In';
-            document.getElementById('forgotPasswordContainer').style.display = isSignUpMode ? 'none' : 'block';
-            document.getElementById('authToggleText').innerHTML = isSignUpMode 
-                ? `Already have an account? <span>Sign In</span>`
-                : `Don't have an account? <span>Sign Up</span>`;
+            setSignUpMode(!isSignUpMode);
         }
     });
 
@@ -3908,6 +4455,26 @@
 
     async function handleAuthSubmit() {
         if(!supabaseClient) return alert('Database not connected. Add your Anon Key.');
+        
+        // Captcha Validation
+        const captchaInput = document.getElementById('regCaptcha');
+        if (!captchaInput) return alert('Captcha field is missing.');
+        const entered = captchaInput.value.replace(':', '').trim();
+        
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const expected = hh + mm;
+        
+        const previousMinuteDate = new Date(now.getTime() - 60000);
+        const prevHh = String(previousMinuteDate.getHours()).padStart(2, '0');
+        const prevMm = String(previousMinuteDate.getMinutes()).padStart(2, '0');
+        const expectedPrev = prevHh + prevMm;
+        
+        if (entered !== expected && entered !== expectedPrev) {
+            alert("Invalid Captcha! Please enter the current system time as HHMM.");
+            return;
+        }
         
         const email = document.getElementById('regEmail').value.trim();
         const password = document.getElementById('regPassword').value;
@@ -3955,11 +4522,83 @@
             }
         } else {
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if(error) alert(error.message);
+            if(error) {
+                alert(error.message);
+                if (error.message.includes('Invalid login credentials') || error.message.includes('User not found')) {
+                    // Redirect to sign up if the account does not exist
+                    setSignUpMode(true);
+                }
+            }
         }
         
         btn.disabled = false;
         btn.innerText = isSignUpMode ? 'Create Account' : 'Sign In';
+    }
+
+    // Star Rating logic
+    let currentFeedbackRating = 0;
+    window.setFeedbackRating = function(rating) {
+      currentFeedbackRating = rating;
+      document.getElementById('feedbackRating').value = rating;
+      const stars = document.querySelectorAll('.rating-star');
+      stars.forEach((star, idx) => {
+        if (idx < rating) {
+          star.style.color = '#fbbf24';
+        } else {
+          star.style.color = '#aaa';
+        }
+      });
+    }
+
+    // Submit Feedback to Supabase
+    window.submitFeedback = async function(e) {
+      e.preventDefault();
+      if (!supabaseClient) {
+        showToast("Database not initialized", "❌");
+        return;
+      }
+      
+      const category = document.getElementById('feedbackCategory').value;
+      const rating = parseInt(document.getElementById('feedbackRating').value) || null;
+      const message = document.getElementById('feedbackMessage').value;
+      
+      const submitBtn = document.getElementById('btnSubmitFeedback');
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Sending...";
+      
+      const payload = {
+        category: category,
+        rating: rating,
+        message: message
+      };
+      
+      if (currentUser) {
+        payload.user_id = currentUser.id;
+        payload.user_email = currentUser.email;
+        payload.full_name = currentUser.user_metadata?.full_name || currentUser.email;
+      } else {
+        payload.user_email = 'Anonymous';
+        payload.full_name = 'Anonymous Student';
+      }
+      
+      try {
+        const { error } = await supabaseClient
+          .from('user_feedbacks')
+          .insert([payload]);
+          
+        if (error) throw error;
+        
+        showToast("Feedback submitted! Thank you.", "💚");
+        document.getElementById('feedbackForm').reset();
+        setFeedbackRating(0);
+      } catch (err) {
+        console.error("Feedback submission error:", err);
+        const errMsg = err.message || err.details || "Check connection";
+        showToast(`Failed: ${errMsg}`, "❌");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Send Feedback";
+      }
     }
 
     async function initAuth() {
