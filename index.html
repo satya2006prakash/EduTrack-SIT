@@ -3057,7 +3057,12 @@
           course.attended = course.conducted;
         }
       } else if (field === 'attended') {
-        course.attended = Math.max(0, Math.min(course.conducted, course.attended + amount));
+        if (amount > 0) {
+          course.attended += amount;
+          course.conducted += amount;
+        } else {
+          course.attended = Math.max(0, course.attended + amount);
+        }
       }
       
       // Update inputs in DOM
@@ -3082,6 +3087,9 @@
         course.conducted = val;
       } else if (field === 'attended') {
         course.attended = val;
+        if (course.attended > course.conducted) {
+          course.conducted = course.attended;
+        }
       }
       
       updateAttendanceCardUI(courseId);
