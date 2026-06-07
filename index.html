@@ -212,7 +212,7 @@
       background: var(--bg-glass);
       border-right: 1px solid var(--border-glass);
       backdrop-filter: blur(20px);
-      padding: 32px 24px;
+      padding: 32px 18px;
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -224,13 +224,13 @@
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       margin-bottom: 48px;
     }
     
     .logo-icon {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       background: var(--accent-gradient);
       border-radius: var(--radius-sm);
       display: flex;
@@ -238,25 +238,30 @@
       justify-content: center;
       color: #fff;
       box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+      flex-shrink: 0;
     }
     
     .logo-text h1 {
       font-family: 'Cinzel', serif;
       font-size: 20px;
       font-weight: 700;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.01em;
       background: linear-gradient(135deg, #fff 40%, var(--text-secondary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      line-height: 1.2;
+      line-height: 1.1;
+      margin-bottom: 2px;
+      white-space: nowrap;
     }
     
     .logo-text span {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--accent-primary);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       font-weight: 600;
+      display: block;
+      line-height: 1;
     }
     
     .nav-links {
