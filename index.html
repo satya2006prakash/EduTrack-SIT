@@ -393,6 +393,32 @@
       font-weight: 700;
       color: #fff;
       font-size: 14px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .student-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+    
+    .student-avatar::after {
+      content: '📷';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .student-avatar:hover::after {
+      opacity: 1;
     }
     
     /* Tab View Panel */
@@ -2025,6 +2051,7 @@
           <div id="authContent" style="display: flex; align-items: center; gap: 12px;">
              <!-- Will be populated by JS -->
           </div>
+          <input type="file" id="avatarUploadInput" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
         </div>
       </header>
       
@@ -4687,12 +4714,17 @@
             if (branchLabel) branchLabel.innerText = branch;
             const initial = name ? name.charAt(0).toUpperCase() : 'U';
             
+            const profilePic = localStorage.getItem('sit_profile_pic');
+            const avatarContent = profilePic 
+                ? `<img src="${profilePic}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />`
+                : initial;
+            
             authContent.innerHTML = `
                 <div class="student-info">
                   <div class="name">${name}</div>
                   <div class="usn" style="color: var(--text-secondary);">${usn} <span style="cursor:pointer; color: var(--danger); font-size: 11px; margin-left: 6px; text-decoration: underline;" onclick="logout()">Sign Out</span></div>
                 </div>
-                <div class="student-avatar">${initial}</div>
+                <div class="student-avatar" onclick="triggerAvatarUpload()">${avatarContent}</div>
             `;
         } else {
             // Show auth screen, hide main app
@@ -4701,8 +4733,62 @@
         }
     }
 
+    // Avatar upload helper functions
+    function triggerAvatarUpload() {
+      const input = document.getElementById('avatarUploadInput');
+      if (input) input.click();
+    }
+
+    function handleAvatarUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File is too large. Please select an image under 5MB.");
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 150;
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+          localStorage.setItem('sit_profile_pic', compressedDataUrl);
+          
+          updateAuthUI(currentUser);
+          syncDataToSupabase();
+          showToast("Profile picture updated! 📷", "✨");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
     async function logout() {
         if(!supabaseClient) return;
+        localStorage.removeItem('sit_profile_pic');
         await supabaseClient.auth.signOut();
     }
 
@@ -4710,7 +4796,7 @@
         try {
             const { data, error } = await supabaseClient
                 .from('student_data')
-                .select('courses, branch, semester, cgpa_prior, cgpa_credits')
+                .select('courses, branch, semester, cgpa_prior, cgpa_credits, profile_pic')
                 .eq('id', userId)
                 .single();
 
@@ -4720,6 +4806,14 @@
             }
                 
             if (data) {
+                // --- Restore profile picture ---
+                if (data.profile_pic) {
+                    localStorage.setItem('sit_profile_pic', data.profile_pic);
+                } else {
+                    localStorage.removeItem('sit_profile_pic');
+                }
+                updateAuthUI(currentUser);
+
                 // --- Restore branch & semester ---
                 const profileBranch = currentUser?.user_metadata?.branch || 'CS';
                 const dbBranch = data.branch || profileBranch;
@@ -4783,6 +4877,7 @@
             const sem    = document.getElementById('semesterSelect')?.value || '';
             const cgpaPrior   = document.getElementById('cgpaPrior')?.value || null;
             const cgpaCredits = document.getElementById('cgpaCredits')?.value || null;
+            const profilePic  = localStorage.getItem('sit_profile_pic') || null;
 
             const payload = { 
                 id:           currentUser.id, 
@@ -4791,6 +4886,7 @@
                 semester:     sem,
                 cgpa_prior:   cgpaPrior   ? parseFloat(cgpaPrior)   : null,
                 cgpa_credits: cgpaCredits ? parseInt(cgpaCredits)   : null,
+                profile_pic:  profilePic,
                 updated_at:   new Date().toISOString()
             };
             

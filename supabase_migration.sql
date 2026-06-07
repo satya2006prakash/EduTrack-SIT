@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS public.student_data (
   semester      TEXT,
   cgpa_prior    NUMERIC(4,2),
   cgpa_credits  INTEGER,
+  profile_pic   TEXT,
   updated_at    TIMESTAMPTZ  DEFAULT now()
 );
 
@@ -23,6 +24,7 @@ ALTER TABLE public.student_data ADD COLUMN IF NOT EXISTS cgpa_prior    NUMERIC(4
 ALTER TABLE public.student_data ADD COLUMN IF NOT EXISTS cgpa_credits  INTEGER;
 ALTER TABLE public.student_data ADD COLUMN IF NOT EXISTS full_name     TEXT;
 ALTER TABLE public.student_data ADD COLUMN IF NOT EXISTS usn           TEXT;
+ALTER TABLE public.student_data ADD COLUMN IF NOT EXISTS profile_pic   TEXT;
 
 -- 3. Enable Row-Level Security (RLS) so each user can only see their own row
 ALTER TABLE public.student_data ENABLE ROW LEVEL SECURITY;
