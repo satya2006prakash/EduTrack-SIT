@@ -4802,6 +4802,7 @@
                 return alert('Invalid USN Format.\\nMust be exactly 10 characters: Starts with 1 or 4, followed by SI, 2 digits (Year), 2 letters (Branch), and 3 digits (Roll No).\\nExample: 1SI24CS001');
             }
             
+            justSignedUpInMemory = true;
             const { data, error } = await supabaseClient.auth.signUp({ 
                 email, 
                 password,
@@ -4815,9 +4816,9 @@
             });
             
             if(error) {
+                justSignedUpInMemory = false;
                 alert(error.message);
             } else {
-                justSignedUpInMemory = true;
                 if (data && data.session) {
                     if (typeof showToast === 'function') {
                         showToast('Signup successful! Welcome to EduTrack.', '✨');
