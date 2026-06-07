@@ -4764,7 +4764,13 @@
                 alert(error.message);
             } else {
                 localStorage.setItem('justSignedUp', 'true');
-                alert('Signup successful! If email confirmation is enabled, please check your inbox. Otherwise, you are logged in.');
+                if (data && data.session) {
+                    if (typeof showToast === 'function') {
+                        showToast('Signup successful! Welcome to EduTrack.', '✨');
+                    }
+                } else {
+                    alert('Signup successful! Please check your inbox for the confirmation email.');
+                }
             }
         } else {
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
@@ -4894,12 +4900,12 @@
             
             if (justSignedUp && !hasSeenTutorial) {
                 localStorage.removeItem('justSignedUp');
-                // Automatically open tutorial after a brief delay so the dashboard can load
+                // Automatically open tutorial directly (short delay to let dashboard render)
                 setTimeout(() => {
                     if (window.openTutorialModal) {
                         window.openTutorialModal();
                     }
-                }, 1000);
+                }, 100);
             }
             
             const name = user.user_metadata?.full_name || user.email;
