@@ -1148,6 +1148,35 @@
       margin-top: 32px;
     }
     
+    /* Video Tutorial Modal Styles */
+    .tutorial-modal-container {
+      max-width: 800px;
+      width: 90%;
+      padding: 24px;
+    }
+    
+    .tutorial-modal-footer {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    
+    .tutorial-modal-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0;
+      max-width: 60%;
+      line-height: 1.4;
+    }
+    
+    .tutorial-modal-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
     /* GPA Table and Elements */
     .gpa-table {
       width: 100%;
@@ -1857,6 +1886,30 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+      }
+      .tutorial-modal-container {
+        padding: 16px;
+        width: 95%;
+        max-height: 95vh;
+        overflow-y: auto;
+      }
+      .tutorial-modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+      .tutorial-modal-desc {
+        max-width: 100%;
+        text-align: center;
+      }
+      .tutorial-modal-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+      }
+      .tutorial-modal-buttons button {
+        width: 100%;
+        justify-content: center;
       }
     }
 
@@ -2680,12 +2733,12 @@
 
   <!-- ================= VIDEO TUTORIAL MODAL ================= -->
   <div class="modal-overlay" id="tutorialModal" style="z-index: 10000;">
-    <div class="modal-container" style="max-width: 800px; padding: 24px;">
+    <div class="modal-container tutorial-modal-container">
       <div class="modal-header" style="margin-bottom: 16px;">
         <h3 class="modal-title" style="display: flex; align-items: center; gap: 8px;">
           <span>🎬</span> EduTrack SIT User Guide
         </h3>
-        <button class="close-modal-btn" id="btnCloseTutorialModal" style="background: transparent; border: none; color: var(--text-secondary); font-size: 24px; cursor: pointer;">&times;</button>
+        <button class="close-modal-btn" id="btnCloseTutorialModal" style="font-size: 24px;">&times;</button>
       </div>
       
       <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid var(--border-glass); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
@@ -2695,11 +2748,11 @@
         </video>
       </div>
       
-      <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-        <p style="font-size: 13px; color: var(--text-secondary); margin: 0; max-width: 60%; line-height: 1.4;">
+      <div class="tutorial-modal-footer">
+        <p class="tutorial-modal-desc">
           This video guide walks you through setting up your courses, tracking attendance, and calculating SGPA/CGPA.
         </p>
-        <div style="display: flex; gap: 8px;">
+        <div class="tutorial-modal-buttons">
           <button class="action-btn secondary" id="btnSkipTutorialModal" style="padding: 8px 16px; font-size: 13px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); color: var(--text-secondary);">Skip, I already know this</button>
           <button class="action-btn" id="btnCancelTutorialModal" style="padding: 8px 16px; font-size: 13px;">Close</button>
         </div>
