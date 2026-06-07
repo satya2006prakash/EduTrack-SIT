@@ -2696,10 +2696,13 @@
       </div>
       
       <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0; max-width: 60%; line-height: 1.4;">
           This video guide walks you through setting up your courses, tracking attendance, and calculating SGPA/CGPA.
         </p>
-        <button class="action-btn secondary" id="btnCancelTutorialModal" style="padding: 8px 16px; font-size: 13px;">Close</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="action-btn secondary" id="btnSkipTutorialModal" style="padding: 8px 16px; font-size: 13px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); color: var(--text-secondary);">Skip, I already know this</button>
+          <button class="action-btn" id="btnCancelTutorialModal" style="padding: 8px 16px; font-size: 13px;">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -3131,6 +3134,7 @@
      const tutorialModal = document.getElementById('tutorialModal');
      const btnCloseTutorialModal = document.getElementById('btnCloseTutorialModal');
      const btnCancelTutorialModal = document.getElementById('btnCancelTutorialModal');
+     const btnSkipTutorialModal = document.getElementById('btnSkipTutorialModal');
      const tutorialVideo = document.getElementById('tutorialVideo');
      
      window.openTutorialModal = function() {
@@ -3151,11 +3155,24 @@
          if (tutorialVideo) {
            tutorialVideo.pause();
          }
+         // Save that user has closed or skipped it, so it doesn't auto-popup again
+         const userId = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.id : 'guest';
+         localStorage.setItem('tutorialSeen_' + userId, 'true');
+       }
+     };
+     
+     window.skipTutorialAlways = function() {
+       const userId = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.id : 'guest';
+       localStorage.setItem('tutorialSeen_' + userId, 'true');
+       closeTutorialModal();
+       if (typeof showToast === 'function') {
+         showToast("Tutorial skipped. You can open it anytime from the dashboard guide link!", "ℹ️");
        }
      };
      
      if (btnCloseTutorialModal) btnCloseTutorialModal.addEventListener('click', closeTutorialModal);
      if (btnCancelTutorialModal) btnCancelTutorialModal.addEventListener('click', closeTutorialModal);
+     if (btnSkipTutorialModal) btnSkipTutorialModal.addEventListener('click', skipTutorialAlways);
      if (tutorialModal) {
        tutorialModal.addEventListener('click', (e) => {
          if (e.target === tutorialModal) {
@@ -4746,6 +4763,7 @@
             if(error) {
                 alert(error.message);
             } else {
+                localStorage.setItem('justSignedUp', 'true');
                 alert('Signup successful! If email confirmation is enabled, please check your inbox. Otherwise, you are logged in.');
             }
         } else {
@@ -4868,6 +4886,21 @@
             // Hide auth screen, show main app
             authScreen.style.display = 'none';
             appContainer.style.display = 'flex';
+            
+            // Check if user just signed up to show the tutorial popup
+            const userId = user.id;
+            const hasSeenTutorial = localStorage.getItem('tutorialSeen_' + userId) === 'true';
+            const justSignedUp = localStorage.getItem('justSignedUp') === 'true';
+            
+            if (justSignedUp && !hasSeenTutorial) {
+                localStorage.removeItem('justSignedUp');
+                // Automatically open tutorial after a brief delay so the dashboard can load
+                setTimeout(() => {
+                    if (window.openTutorialModal) {
+                        window.openTutorialModal();
+                    }
+                }, 1000);
+            }
             
             const name = user.user_metadata?.full_name || user.email;
             const usn = user.user_metadata?.usn || 'No USN';
