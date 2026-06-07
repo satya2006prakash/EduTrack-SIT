@@ -4679,6 +4679,7 @@
     
     let supabaseClient = null;
     let currentUser = null;
+    let justSignedUpInMemory = false;
     
     try {
         if(SUPABASE_ANON_KEY !== 'YOUR_ANON_KEY_HERE') {
@@ -4816,7 +4817,7 @@
             if(error) {
                 alert(error.message);
             } else {
-                localStorage.setItem('justSignedUp', 'true');
+                justSignedUpInMemory = true;
                 if (data && data.session) {
                     if (typeof showToast === 'function') {
                         showToast('Signup successful! Welcome to EduTrack.', '✨');
@@ -4949,16 +4950,18 @@
             // Check if user just signed up to show the tutorial popup
             const userId = user.id;
             const hasSeenTutorial = localStorage.getItem('tutorialSeen_' + userId) === 'true';
-            const justSignedUp = localStorage.getItem('justSignedUp') === 'true';
             
-            if (justSignedUp && !hasSeenTutorial) {
-                localStorage.removeItem('justSignedUp');
-                // Automatically open tutorial directly (short delay to let dashboard render)
-                setTimeout(() => {
-                    if (window.openTutorialModal) {
-                        window.openTutorialModal();
-                    }
-                }, 100);
+            if (justSignedUpInMemory) {
+                const triggerTutorial = !hasSeenTutorial;
+                justSignedUpInMemory = false;
+                if (triggerTutorial) {
+                    // Automatically open tutorial directly (short delay to let dashboard render)
+                    setTimeout(() => {
+                        if (window.openTutorialModal) {
+                            window.openTutorialModal();
+                        }
+                    }, 100);
+                }
             }
             
             const name = user.user_metadata?.full_name || user.email;
