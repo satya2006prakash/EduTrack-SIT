@@ -2944,8 +2944,9 @@
       if (type === 'IPCC' || type === 'THEORY_ONLY' || type === 'LOW_THEORY' || type === 'ONE_CREDIT') {
         const t1Val = m.test1;
         const t2Val = m.test2;
-        const t1 = parseFloat(t1Val) || 0;
-        const t2 = parseFloat(t2Val) || 0;
+        const testMaxLimit = type === 'ONE_CREDIT' ? 30 : 50;
+        const t1 = Math.max(0, Math.min(parseFloat(t1Val) || 0, testMaxLimit));
+        const t2 = Math.max(0, Math.min(parseFloat(t2Val) || 0, testMaxLimit));
         
         const t1Empty = isEmpty(t1Val);
         const t2Empty = isEmpty(t2Val);
@@ -2995,8 +2996,8 @@
         if (type === 'IPCC' || type === 'THEORY_ONLY' || type === 'ONE_CREDIT') {
           const q1Val = m.quiz1;
           const q2Val = m.quiz2;
-          const q1 = parseFloat(q1Val) || 0;
-          const q2 = parseFloat(q2Val) || 0;
+          const q1 = Math.max(0, Math.min(parseFloat(q1Val) || 0, 20));
+          const q2 = Math.max(0, Math.min(parseFloat(q2Val) || 0, 20));
           
           const q1Empty = isEmpty(q1Val);
           const q2Empty = isEmpty(q2Val);
@@ -3039,8 +3040,8 @@
           if (type === 'IPCC' || type === 'THEORY_ONLY') {
             const a1Val = m.abl1;
             const a2Val = m.abl2;
-            const a1 = parseFloat(a1Val) || 0;
-            const a2 = parseFloat(a2Val) || 0;
+            const a1 = Math.max(0, Math.min(parseFloat(a1Val) || 0, 20));
+            const a2 = Math.max(0, Math.min(parseFloat(a2Val) || 0, 20));
             
             const a1Empty = isEmpty(a1Val);
             const a2Empty = isEmpty(a2Val);
@@ -3075,7 +3076,11 @@
       // 2. PRACTICAL COMPONENT
       if (type === 'IPCC' || type === 'LAB_ONLY') {
         const recordList = m.labRecords || [''];
-        const recordListRounded = recordList.map(val => isEmpty(val) ? 0 : Math.round(parseFloat(val)));
+        const recordListRounded = recordList.map(val => {
+          if (isEmpty(val)) return 0;
+          const clamped = Math.max(0, Math.min(parseFloat(val) || 0, 35));
+          return Math.round(clamped);
+        });
         const recordSum = recordListRounded.reduce((sum, val) => sum + val, 0);
         const recordMax = recordList.length * 35;
         const recordReducedMax = type === 'IPCC' ? 15 : 35;
@@ -3102,7 +3107,11 @@
         components.labRecords = { raw: recordSum, avg: recordAvg, max: recordMax, reduced: recordReduced, reducedMax: recordReducedMax, pass: !isRecFail };
         
         const testList = m.labTests || [''];
-        const testListRounded = testList.map(val => isEmpty(val) ? 0 : Math.round(parseFloat(val)));
+        const testListRounded = testList.map(val => {
+          if (isEmpty(val)) return 0;
+          const clamped = Math.max(0, Math.min(parseFloat(val) || 0, 15));
+          return Math.round(clamped);
+        });
         const testSum = testListRounded.reduce((sum, val) => sum + val, 0);
         const testMax = testList.length * 15;
         const testReducedMax = type === 'IPCC' ? 10 : 15;
@@ -4903,7 +4912,11 @@
         if (!course.cieMarks) course.cieMarks = getInitialCieMarksForType(course.type);
         
         let maxVal = 50; // default for test1, test2
-        if (['quiz1', 'quiz2', 'abl1', 'abl2'].includes(field)) maxVal = 20;
+        if (course.type === 'ONE_CREDIT' && ['test1', 'test2'].includes(field)) {
+          maxVal = 30;
+        } else if (['quiz1', 'quiz2', 'abl1', 'abl2'].includes(field)) {
+          maxVal = 20;
+        }
         
         if (value === '' || value === undefined) {
           course.cieMarks[field] = '';
