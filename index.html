@@ -500,6 +500,7 @@
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      white-space: nowrap;
     }
     
     .stat-icon {
@@ -617,6 +618,15 @@
     
     .alert-item.danger .alert-icon { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
     .alert-item.warning .alert-icon { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .alert-item.success {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      color: var(--text-primary);
+    }
+    .alert-item.success .alert-icon {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+    }
     
     .alert-content h4 {
       font-size: 14px;
@@ -1619,6 +1629,12 @@
       border: 1px solid rgba(239, 68, 68, 0.2);
     }
     
+    .status-badge.warning {
+      background: rgba(234, 179, 8, 0.1);
+      color: #eab308;
+      border: 1px solid rgba(234, 179, 8, 0.2);
+    }
+    
     .delete-icon-btn {
       background: transparent;
       border: none;
@@ -2210,7 +2226,7 @@
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-header">
-              <span class="stat-title">Overall Attendance</span>
+              <span class="stat-title">Attendance (Current Sem)</span>
               <div class="stat-icon">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
@@ -2226,7 +2242,7 @@
           
           <div class="stat-card">
             <div class="stat-header">
-              <span class="stat-title">Average CIE</span>
+              <span class="stat-title">CIE (Current Sem)</span>
               <div class="stat-icon">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -2242,7 +2258,7 @@
           
           <div class="stat-card">
             <div class="stat-header">
-              <span class="stat-title">Predicted SGPA</span>
+              <span class="stat-title">SGPA (Current Sem)</span>
               <div class="stat-icon">
                 <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
@@ -2252,6 +2268,22 @@
             <div class="stat-value" id="predictedSgpa">0.00</div>
             <div class="stat-footer">
               <span>Based on expected SEE marks</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-title">CGPA (incl. Current Sem)</span>
+              <div class="stat-icon">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-value" id="dashboardCgpa">0.00</div>
+            <div class="stat-footer">
+              <span id="dashboardCredits" style="font-weight: 700; color: var(--accent-primary);">0</span>
+              <span>Credits Earned (Max 160)</span>
             </div>
           </div>
         </div>
@@ -2371,18 +2403,24 @@
             <div class="glass-panel">
               <h3 class="panel-title" style="font-size: 16px; margin-bottom: 16px;">Cumulative CGPA Calculator</h3>
               
-              <div class="form-group" style="margin-bottom: 12px;">
+              <div class="form-group" style="margin-bottom: 16px;">
                 <label for="cgpaPrior">Prior Semesters CGPA</label>
                 <input type="number" id="cgpaPrior" step="0.01" min="0" max="10" placeholder="e.g. 8.25" value="0.00">
+                <span style="font-size: 11.5px; color: var(--text-secondary); display: block; margin-top: 4px; line-height: 1.4;">
+                  Your current CGPA before this semester.<br>
+                  (found on your latest grade card, e.g., 8.90)
+                </span>
               </div>
-              <div class="form-group" style="margin-bottom: 20px;">
-                <label for="cgpaCredits">Prior Semesters Credits Completed</label>
-                <input type="number" id="cgpaCredits" min="1" max="8" placeholder="1-8">
+              <div class="form-group" style="margin-bottom: 24px;">
+                <label for="cgpaCredits">Prior Credits Completed (Max 160)</label>
+                <input type="number" id="cgpaCredits" min="0" max="160" placeholder="e.g. 80">
+                <span style="font-size: 11.5px; color: var(--text-secondary); display: block; margin-top: 4px; line-height: 1.4;">
+                  Total credits earned in all previous semesters combined.<br>
+                  (found on your latest grade card, e.g., 40.00)
+                </span>
               </div>
               
-              <button class="action-btn" style="width: 100%; justify-content: center;" id="btnCalculateCgpa">Calculate CGPA</button>
-              
-              <div id="cgpaOutput" style="margin-top: 16px; display: none; text-align: center; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+              <div id="cgpaOutput" style="text-align: center; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
                 <div style="font-size: 13px; color: var(--text-secondary);">Calculated CGPA</div>
                 <div style="font-size: 24px; font-weight: 800; color: var(--accent-primary); margin-top: 4px;" id="cgpaVal">0.00</div>
               </div>
@@ -2864,13 +2902,13 @@
     // CIE Calculator marking scheme models
     function getInitialCieMarksForType(type) {
       if (type === 'IPCC') {
-        return { test1: 0, test2: 0, quiz1: 0, quiz2: 0, abl1: 0, abl2: 0, labRecords: [0], labTests: [0] };
+        return { test1: '', test2: '', quiz1: '', quiz2: '', abl1: '', abl2: '', labRecords: [''], labTests: [''] };
       } else if (type === 'THEORY_ONLY') {
-        return { test1: 0, test2: 0, quiz1: 0, quiz2: 0, abl1: 0, abl2: 0 };
+        return { test1: '', test2: '', quiz1: '', quiz2: '', abl1: '', abl2: '' };
       } else if (type === 'LAB_ONLY') {
-        return { labRecords: [0], labTests: [0] };
+        return { labRecords: [''], labTests: [''] };
       } else { // LOW_THEORY
-        return { test1: 0, test2: 0, quiz1: 0, abl1: 0 };
+        return { test1: '', test2: '', quiz1: '', abl1: '' };
       }
     }
 
@@ -2881,98 +2919,228 @@
       let theoryRaw = 0;
       let practicalRaw = 0;
       let isEligible = true;
+      let isPending = false;
       const components = {};
+      
+      const isEmpty = (v) => v === undefined || v === '';
+      
+      let isTFail = false;
+      let isTPending = false;
+      let isQFail = false;
+      let isQPending = false;
+      let isAFail = false;
+      let isAPending = false;
+      let isIntFail = false;
+      let isIntPending = false;
+      let isRecFail = false;
+      let isRecPending = false;
+      let isTestFail = false;
+      let isTestPending = false;
       
       // 1. THEORY COMPONENT
       if (type === 'IPCC' || type === 'THEORY_ONLY' || type === 'LOW_THEORY') {
-        const t1 = parseFloat(m.test1) || 0;
-        const t2 = parseFloat(m.test2) || 0;
+        const t1Val = m.test1;
+        const t2Val = m.test2;
+        const t1 = parseFloat(t1Val) || 0;
+        const t2 = parseFloat(t2Val) || 0;
         const tSum = t1 + t2;
         const tReduced = Math.round((tSum / 100) * 34);
-        const tPass = tSum >= 40;
-        if (!tPass) isEligible = false;
+        
+        const t1Empty = isEmpty(t1Val);
+        const t2Empty = isEmpty(t2Val);
+        
+        if (t1Empty || t2Empty) {
+          const maxPossible = (t1Empty ? 50 : t1) + (t2Empty ? 50 : t2);
+          if (maxPossible < 40) {
+            isTFail = true;
+          } else {
+            isTPending = true;
+          }
+        } else {
+          if (tSum < 40) {
+            isTFail = true;
+          }
+        }
+        
         theoryRaw += tReduced;
-        components.tests = { raw: tSum, reduced: tReduced, pass: tPass, max: 100, reducedMax: 34 };
+        components.tests = { raw: tSum, reduced: tReduced, pass: !isTFail, max: 100, reducedMax: 34 };
         
         if (type === 'IPCC' || type === 'THEORY_ONLY') {
-          const q1 = parseFloat(m.quiz1) || 0;
-          const q2 = parseFloat(m.quiz2) || 0;
+          const q1Val = m.quiz1;
+          const q2Val = m.quiz2;
+          const q1 = parseFloat(q1Val) || 0;
+          const q2 = parseFloat(q2Val) || 0;
           const qSum = q1 + q2;
           const qReduced = Math.round((qSum / 40) * 8);
-          const qPass = qSum >= 16;
-          if (!qPass) isEligible = false;
-          theoryRaw += qReduced;
-          components.quiz = { raw: qSum, reduced: qReduced, pass: qPass, max: 40, reducedMax: 8 };
           
-          const a1 = parseFloat(m.abl1) || 0;
-          const a2 = parseFloat(m.abl2) || 0;
+          const q1Empty = isEmpty(q1Val);
+          const q2Empty = isEmpty(q2Val);
+          
+          if (q1Empty || q2Empty) {
+            const maxPossible = (q1Empty ? 20 : q1) + (q2Empty ? 20 : q2);
+            if (maxPossible < 16) {
+              isQFail = true;
+            } else {
+              isQPending = true;
+            }
+          } else {
+            if (qSum < 16) {
+              isQFail = true;
+            }
+          }
+          
+          theoryRaw += qReduced;
+          components.quiz = { raw: qSum, reduced: qReduced, pass: !isQFail, max: 40, reducedMax: 8 };
+          
+          const a1Val = m.abl1;
+          const a2Val = m.abl2;
+          const a1 = parseFloat(a1Val) || 0;
+          const a2 = parseFloat(a2Val) || 0;
           const aSum = a1 + a2;
           const aReduced = Math.round((aSum / 40) * 8);
-          const aPass = aSum >= 16;
-          if (!aPass) isEligible = false;
+          
+          const a1Empty = isEmpty(a1Val);
+          const a2Empty = isEmpty(a2Val);
+          
+          if (a1Empty || a2Empty) {
+            const maxPossible = (a1Empty ? 20 : a1) + (a2Empty ? 20 : a2);
+            if (maxPossible < 16) {
+              isAFail = true;
+            } else {
+              isAPending = true;
+            }
+          } else {
+            if (aSum < 16) {
+              isAFail = true;
+            }
+          }
+          
           theoryRaw += aReduced;
-          components.abl = { raw: aSum, reduced: aReduced, pass: aPass, max: 40, reducedMax: 8 };
+          components.abl = { raw: aSum, reduced: aReduced, pass: !isAFail, max: 40, reducedMax: 8 };
         } else { // LOW_THEORY
-          const int1 = parseFloat(m.quiz1) || 0;
-          const int2 = parseFloat(m.abl1) || 0;
+          const int1Val = m.quiz1;
+          const int2Val = m.abl1;
+          const int1 = parseFloat(int1Val) || 0;
+          const int2 = parseFloat(int2Val) || 0;
           const intSum = int1 + int2;
           const intReduced = Math.round((intSum / 40) * 16);
-          const intPass = intSum >= 16;
-          if (!intPass) isEligible = false;
+          
+          const int1Empty = isEmpty(int1Val);
+          const int2Empty = isEmpty(int2Val);
+          
+          if (int1Empty || int2Empty) {
+            const maxPossible = (int1Empty ? 20 : int1) + (int2Empty ? 20 : int2);
+            if (maxPossible < 16) {
+              isIntFail = true;
+            } else {
+              isIntPending = true;
+            }
+          } else {
+            if (intSum < 16) {
+              isIntFail = true;
+            }
+          }
+          
           theoryRaw += intReduced;
-          components.internals = { raw: intSum, reduced: intReduced, pass: intPass, max: 40, reducedMax: 16 };
+          components.internals = { raw: intSum, reduced: intReduced, pass: !isIntFail, max: 40, reducedMax: 16 };
         }
       }
       
       // 2. PRACTICAL COMPONENT
       if (type === 'IPCC' || type === 'LAB_ONLY') {
-        const recordList = m.labRecords || [0];
-        const recordSum = recordList.reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
+        const recordList = m.labRecords || [''];
+        const recordSum = recordList.reduce((sum, val) => sum + (isEmpty(val) ? 0 : parseFloat(val)), 0);
         const recordMax = recordList.length * 35;
         const recordReducedMax = type === 'IPCC' ? 15 : 35;
         const recordReduced = recordMax > 0 ? Math.round((recordSum / recordMax) * recordReducedMax) : 0;
-        const recordPass = recordMax > 0 ? (recordSum >= 0.4 * recordMax) : true;
-        if (!recordPass) isEligible = false;
-        practicalRaw += recordReduced;
-        components.labRecords = { raw: recordSum, max: recordMax, reduced: recordReduced, reducedMax: recordReducedMax, pass: recordPass };
         
-        const testList = m.labTests || [0];
-        const testSum = testList.reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
+        const recordThreshold = recordList.length * 14;
+        const recordEmptyCount = recordList.filter(isEmpty).length;
+        
+        if (recordEmptyCount > 0) {
+          const maxPossible = recordSum + (recordEmptyCount * 35);
+          if (maxPossible < recordThreshold) {
+            isRecFail = true;
+          } else {
+            isRecPending = true;
+          }
+        } else {
+          if (recordSum < recordThreshold) {
+            isRecFail = true;
+          }
+        }
+        
+        practicalRaw += recordReduced;
+        components.labRecords = { raw: recordSum, max: recordMax, reduced: recordReduced, reducedMax: recordReducedMax, pass: !isRecFail };
+        
+        const testList = m.labTests || [''];
+        const testSum = testList.reduce((sum, val) => sum + (isEmpty(val) ? 0 : parseFloat(val)), 0);
         const testMax = testList.length * 15;
         const testReducedMax = type === 'IPCC' ? 10 : 15;
         const testReduced = testMax > 0 ? Math.round((testSum / testMax) * testReducedMax) : 0;
-        const testPass = testMax > 0 ? (testSum >= 0.4 * testMax) : true;
-        if (!testPass) isEligible = false;
+        
+        const testThreshold = testList.length * 6;
+        const testEmptyCount = testList.filter(isEmpty).length;
+        
+        if (testEmptyCount > 0) {
+          const maxPossible = testSum + (testEmptyCount * 15);
+          if (maxPossible < testThreshold) {
+            isTestFail = true;
+          } else {
+            isTestPending = true;
+          }
+        } else {
+          if (testSum < testThreshold) {
+            isTestFail = true;
+          }
+        }
+        
         practicalRaw += testReduced;
-        components.labTests = { raw: testSum, max: testMax, reduced: testReduced, reducedMax: testReducedMax, pass: testPass };
+        components.labTests = { raw: testSum, max: testMax, reduced: testReduced, reducedMax: testReducedMax, pass: !isTestFail };
       }
       
       let finalCie = 0;
       let maxCie = 50;
       
       if (type === 'IPCC') {
-        const scaledTheory = theoryRaw * 0.5;
-        finalCie = Math.round((scaledTheory + practicalRaw) * 10) / 10;
+        const scaledTheory = Math.round(theoryRaw * 0.5);
+        finalCie = scaledTheory + practicalRaw;
         components.theoryTotal = { score: scaledTheory, max: 25 };
         components.practicalTotal = { score: practicalRaw, max: 25 };
       } else if (type === 'THEORY_ONLY') {
-        finalCie = Math.round(theoryRaw * 10) / 10;
+        finalCie = theoryRaw;
         components.theoryTotal = { score: finalCie, max: 50 };
       } else if (type === 'LAB_ONLY') {
-        finalCie = Math.round(practicalRaw * 10) / 10;
-        components.practicalTotal = { score: practicalRaw, max: 50 };
+        finalCie = practicalRaw;
+        components.practicalTotal = { score: finalCie, max: 50 };
       } else { // LOW_THEORY
-        finalCie = Math.round(theoryRaw * 10) / 10;
+        finalCie = theoryRaw;
         components.theoryTotal = { score: finalCie, max: 50 };
       }
       
-      if (finalCie < 20) isEligible = false;
+      if (isTFail || isQFail || isAFail || isIntFail || isRecFail || isTestFail) {
+        isEligible = false;
+      }
+      if (isTPending || isQPending || isAPending || isIntPending || isRecPending || isTestPending) {
+        isPending = true;
+      }
+      
+      if (!isPending && finalCie < 20) isEligible = false;
       
       return {
         cie: finalCie,
         cieMax: maxCie,
         isEligible: isEligible,
-        components: components
+        isPending: isPending,
+        components: components,
+        status: {
+          tests: { fail: isTFail, pending: isTPending },
+          quiz: { fail: isQFail, pending: isQPending },
+          abl: { fail: isAFail, pending: isAPending },
+          internals: { fail: isIntFail, pending: isIntPending },
+          labRecords: { fail: isRecFail, pending: isRecPending },
+          labTests: { fail: isTestFail, pending: isTestPending }
+        }
       };
     }
 
@@ -2988,15 +3156,16 @@
       
       // Normalize lab arrays to 0-based if not already arrays
       if ((c.type === 'IPCC' || c.type === 'LAB_ONLY') && !Array.isArray(c.cieMarks.labRecords)) {
-        c.cieMarks.labRecords = [0];
+        c.cieMarks.labRecords = [''];
       }
       if ((c.type === 'IPCC' || c.type === 'LAB_ONLY') && !Array.isArray(c.cieMarks.labTests)) {
-        c.cieMarks.labTests = [0];
+        c.cieMarks.labTests = [''];
       }
       
       const details = calculateCieDetails(c);
       c.cieTotal = details.cie;
       c.isEligible = details.isEligible;
+      c.isPending = details.isPending;
       if (c.seeExpected === undefined) {
         c.seeExpected = 40;
       }
@@ -3456,24 +3625,22 @@
       const course = courses.find(c => c.id === courseId);
       if (!course) return;
       
-      const totalCie = course.cie1 + course.cie2 + course.cieQuiz;
+      const details = calculateCieDetails(course);
+      course.cieTotal = details.cie;
+      course.isEligible = details.isEligible;
+      course.isPending = details.isPending;
       
       // Update CIE UI elements if they exist
       const totalSpan = document.getElementById(`cie-total-${courseId}`);
       const statusSpan = document.getElementById(`cie-status-${courseId}`);
       if (totalSpan && statusSpan) {
-        totalSpan.textContent = totalCie.toFixed(1);
-        if (totalCie >= 20) {
-          statusSpan.textContent = "Eligible";
-          statusSpan.className = "status-text stat-badge success";
-        } else {
-          statusSpan.textContent = "Low CIE";
-          statusSpan.className = "status-text stat-badge danger";
-        }
+        totalSpan.textContent = details.cie.toFixed(1);
+        statusSpan.textContent = details.isEligible ? (details.isPending ? "Pending" : "Eligible") : "Not Eligible";
+        statusSpan.className = `status-text stat-badge ${details.isEligible ? (details.isPending ? 'warning' : 'success') : 'danger'}`;
       }
       
       // Update targets table
-      updateTargetsTable(courseId, totalCie);
+      updateTargetsTable(courseId, details.cie);
       
       // Update local storage
       saveToLocalStorage();
@@ -3535,12 +3702,13 @@
     }
     
     // Grade predictions based on CIE + SEE
-    function getFinalGrade(cieTotal, seeMarks) {
-      if (cieTotal < 20) return { grade: 'F', points: 0, desc: 'Fail (Low CIE)' };
-      if (seeMarks < 35) return { grade: 'F', points: 0, desc: 'Fail (Low SEE)' };
+    function getFinalGrade(cieTotal, seeMarks, isEligible = true) {
+      if (isEligible === false) return { grade: 'F', points: 0, desc: 'Fail (Not Eligible)' };
+      if (cieTotal < 20) return { grade: 'F', points: 0, desc: 'Fail (Not Eligible)' };
+      if (Math.round(seeMarks) < 35) return { grade: 'F', points: 0, desc: 'Fail (Low SEE)' };
       
       const scaledSee = seeMarks / 2; // scale 100 to 50
-      const total = cieTotal + scaledSee;
+      const total = Math.round(cieTotal + scaledSee);
       
       if (total >= 90) return { grade: 'O', points: 10, desc: 'Outstanding' };
       if (total >= 80) return { grade: 'A+', points: 9, desc: 'Excellent' };
@@ -3553,7 +3721,7 @@
     }
     
     // Target SEE calculation
-    function getTargets(cieTotal) {
+    function getTargets(cieTotal, isEligible = true) {
       const grades = [
         { letter: 'O', minTotal: 90 },
         { letter: 'A+', minTotal: 80 },
@@ -3564,8 +3732,8 @@
         { letter: 'P', minTotal: 40 }
       ];
       
-      if (cieTotal < 20) {
-        return grades.map(g => ({ ...g, reqSee: -1, status: 'Impossible (Low CIE)' }));
+      if (isEligible === false || cieTotal < 20) {
+        return grades.map(g => ({ ...g, reqSee: -1, status: 'Impossible (Not Eligible)' }));
       }
       
       return grades.map(g => {
@@ -3580,6 +3748,46 @@
           return { ...g, reqSee: actualReq, status: 'Possible' };
         }
       });
+    }
+
+    // Update dashboard CGPA and total credits earned
+    function updateDashboardCgpa() {
+      const priorCgpa = parseFloat(document.getElementById('cgpaPrior').value) || 0;
+      const priorCreditsInput = parseInt(document.getElementById('cgpaCredits').value) || 0;
+      const priorCredits = Math.max(0, Math.min(160, priorCreditsInput));
+      
+      let semCreditPoints = 0;
+      let semCredits = 0;
+      courses.forEach(c => {
+        const cieTotal = c.cieTotal !== undefined ? c.cieTotal : 0;
+        const grading = c.credits === 0 
+          ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
+          : getFinalGrade(cieTotal, c.seeExpected, c.isEligible !== undefined ? c.isEligible : true);
+        semCreditPoints += (grading.points * (Number(c.credits) || 0));
+        semCredits += (Number(c.credits) || 0);
+      });
+      
+      const semSgpa = semCredits > 0 ? (semCreditPoints / semCredits) : 0;
+      
+      const totalCredits = priorCredits + semCredits;
+      const totalCreditPoints = (priorCgpa * priorCredits) + (semSgpa * semCredits);
+      const overallCgpa = totalCredits > 0 ? (totalCreditPoints / totalCredits) : 0;
+      
+      // Update CGPA panel elements
+      const cgpaVal = document.getElementById('cgpaVal');
+      if (cgpaVal) {
+        cgpaVal.textContent = overallCgpa.toFixed(2);
+      }
+      
+      // Update Dashboard elements
+      const dashboardCgpa = document.getElementById('dashboardCgpa');
+      const dashboardCredits = document.getElementById('dashboardCredits');
+      if (dashboardCgpa) {
+        dashboardCgpa.textContent = overallCgpa.toFixed(2);
+      }
+      if (dashboardCredits) {
+        dashboardCredits.textContent = totalCredits;
+      }
     }
 
     // Global Metrics Calculation
@@ -3615,9 +3823,18 @@
       document.getElementById('averageCie').textContent = `${avgCieVal.toFixed(1)} / 50`;
       
       const cieBdg = document.getElementById('cieBadge');
-      const lowCieCourse = courses.some(c => (c.cieTotal !== undefined ? c.cieTotal : (c.cie1 + c.cie2 + c.cieQuiz)) < 20);
-      cieBdg.textContent = lowCieCourse ? "Detain Risks" : "Eligible";
-      cieBdg.className = `stat-badge ${lowCieCourse ? 'danger' : 'success'}`;
+      const lowCieCourse = courses.some(c => c.isEligible === false);
+      const pendingCieCourse = courses.some(c => c.isPending === true);
+      if (lowCieCourse) {
+        cieBdg.textContent = "Detain Risks";
+        cieBdg.className = "stat-badge danger";
+      } else if (pendingCieCourse) {
+        cieBdg.textContent = "Pending";
+        cieBdg.className = "stat-badge warning";
+      } else {
+        cieBdg.textContent = "Eligible";
+        cieBdg.className = "stat-badge success";
+      }
       
       // 3. Predicted SGPA
       let creditPointsSum = 0;
@@ -3626,9 +3843,9 @@
         const cieTotal = c.cieTotal !== undefined ? c.cieTotal : (c.cie1 + c.cie2 + c.cieQuiz);
         const grading = c.credits === 0 
           ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
-          : getFinalGrade(cieTotal, c.seeExpected);
-        creditPointsSum += (grading.points * c.credits);
-        creditsSum += c.credits;
+          : getFinalGrade(cieTotal, c.seeExpected, c.isEligible !== undefined ? c.isEligible : true);
+        creditPointsSum += (grading.points * (Number(c.credits) || 0));
+        creditsSum += (Number(c.credits) || 0);
       });
       const predictedSgpaVal = creditsSum > 0 ? (creditPointsSum / creditsSum) : 0;
       document.getElementById('predictedSgpa').textContent = predictedSgpaVal.toFixed(2);
@@ -3642,17 +3859,20 @@
           const cieTotal = c.cieTotal !== undefined ? c.cieTotal : (c.cie1 + c.cie2 + c.cieQuiz);
           const grading = c.credits === 0 
             ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
-            : getFinalGrade(cieTotal, c.seeExpected);
+            : getFinalGrade(cieTotal, c.seeExpected, c.isEligible !== undefined ? c.isEligible : true);
           return grading.grade === 'F' || grading.grade === 'NP';
         });
         if (anyF) {
-          gpaResultDesc.textContent = "Fail Risk! Correct subjects with low CIE or poor expected exam scores.";
+          gpaResultDesc.textContent = "Fail Risk! Correct subjects with ineligible status or poor expected exam scores.";
           gpaResultDesc.style.color = "var(--danger)";
         } else {
           gpaResultDesc.textContent = "Looking good! You are passing all courses.";
           gpaResultDesc.style.color = "#fff";
         }
       }
+      
+      // 4. Update Cumulative CGPA and total credits
+      updateDashboardCgpa();
     }
 
     // Export CIE Data to CSV (Excel format)
@@ -3710,7 +3930,7 @@
         
         const grading = c.credits === 0 
           ? (details.cie >= 20 ? { grade: 'PP' } : { grade: 'NP' })
-          : getFinalGrade(details.cie, c.seeExpected);
+          : getFinalGrade(details.cie, c.seeExpected, details.isEligible);
           
         const row = [
           c.code,
@@ -3719,7 +3939,7 @@
           c.type,
           breakdownStr,
           details.cie.toFixed(2),
-          details.isEligible ? "Eligible" : "Low CIE",
+          details.isEligible ? (details.isPending ? "Pending" : "Eligible") : "Not Eligible",
           c.credits === 0 ? "N/A" : (c.seeExpected || 0),
           grading.grade
         ];
@@ -3789,9 +4009,10 @@
       });
       
       let alertsCount = 0;
+      
       courses.forEach(c => {
         const attStats = getAttendanceStats(c.attended, c.conducted);
-        const cieTotal = c.cieTotal !== undefined ? c.cieTotal : (c.cie1 + c.cie2 + c.cieQuiz);
+        const details = calculateCieDetails(c);
         
         // Low attendance alert
         if (attStats.status !== 'safe') {
@@ -3805,22 +4026,44 @@
               <div class="alert-icon">${badgeIcon}</div>
               <div class="alert-content">
                 <h4>${c.code} - ${alertTitle}</h4>
-                <p>Attendance is at ${attStats.percent}%. ${attStats.advice.replace(/<\/?strong>/g, '')}</p>
+                <p>Attendance is at ${attStats.percent.toFixed(1)}%. ${attStats.advice.replace(/<\/?strong>/g, '')}</p>
               </div>
             </div>
           `;
           if (alertsPanel) alertsPanel.insertAdjacentHTML('beforeend', alertHtml);
         }
         
-        // Low CIE alert
-        if (cieTotal < 20) {
+        // Low CIE/Eligibility alert
+        if (details.isEligible === false) {
           alertsCount++;
+          let failures = [];
+          if (details.components.tests && !details.components.tests.pass) failures.push("Tests (<40%)");
+          if (details.components.quiz && !details.components.quiz.pass) failures.push("Quizzes (<40%)");
+          if (details.components.abl && !details.components.abl.pass) failures.push("ABL (<40%)");
+          if (details.components.internals && !details.components.internals.pass) failures.push("Internals (<40%)");
+          if (details.components.labRecords && !details.components.labRecords.pass) failures.push("Lab Records (<40%)");
+          if (details.components.labTests && !details.components.labTests.pass) failures.push("Lab Tests (<40%)");
+          if (details.cie < 20 && !details.isPending) failures.push("CIE Total < 20");
+          if (failures.length === 0) failures.push("CIE Total < 20");
+          
           const alertHtml = `
             <div class="alert-item danger">
               <div class="alert-icon">❌</div>
               <div class="alert-content">
-                <h4>${c.code} - Low CIE Score (Ineligible)</h4>
-                <p>CIE score is ${cieTotal.toFixed(1)}/50. Requires a minimum of 20 marks to qualify for SEE.</p>
+                <h4>${c.code} - Detained Risk (Low CIE)</h4>
+                <p>Failed component threshold: ${failures.join(', ')}. CIE total: ${details.cie.toFixed(1)}/50.</p>
+              </div>
+            </div>
+          `;
+          if (alertsPanel) alertsPanel.insertAdjacentHTML('beforeend', alertHtml);
+        } else if (details.isPending === true) {
+          alertsCount++;
+          const alertHtml = `
+            <div class="alert-item warning">
+              <div class="alert-icon">⏳</div>
+              <div class="alert-content">
+                <h4>${c.code} - CIE Marks Pending</h4>
+                <p>CIE is ${details.cie.toFixed(1)}/50. Complete all sessional inputs to confirm exam eligibility.</p>
               </div>
             </div>
           `;
@@ -3944,6 +4187,7 @@
         const details = calculateCieDetails(c);
         c.cieTotal = details.cie;
         c.isEligible = details.isEligible;
+        c.isPending = details.isPending;
         
         const cardHtml = `
           <div class="collapsible-card ${c.isExpanded ? 'expanded' : ''}" id="course-card-${c.id}">
@@ -3975,12 +4219,12 @@
                 <!-- SEE Output Box -->
                 <div class="header-badge see-box">
                   <span class="label">SEE</span>
-                  ${c.credits === 0 ? '<span style="font-weight: 700; color: #aaa; margin-top: 4px;">N/A</span>' : `<input type="number" min="0" max="100" class="see-input-header" value="${c.seeExpected || ''}" onchange="updateExpectedSee('${c.id}', this.value)" style="width: 45px; background: transparent; border: none; color: var(--text-primary); text-align: center; font-weight: 700;">`}
+                  ${c.credits === 0 ? '<span style="font-weight: 700; color: #aaa; margin-top: 4px;">N/A</span>' : `<input type="number" min="0" max="100" class="see-input-header" value="${(c.seeExpected === 0 || c.seeExpected) ? c.seeExpected : ''}" onchange="updateExpectedSee('${c.id}', this.value)" style="width: 45px; background: transparent; border: none; color: var(--text-primary); text-align: center; font-weight: 700;">`}
                 </div>
                 
                 <!-- Grade/Status Badge -->
-                <span class="status-badge ${c.isEligible ? 'success' : 'danger'}">
-                  ${c.isEligible ? 'Eligible' : 'Low CIE'}
+                <span class="status-badge ${c.isEligible ? (c.isPending ? 'warning' : 'success') : 'danger'}">
+                  ${c.isEligible ? (c.isPending ? 'Pending' : 'Eligible') : 'Not Eligible'}
                 </span>
                 
                 <!-- Delete Button (X) -->
@@ -4034,10 +4278,10 @@
                   <span style="font-size: 11px; color: var(--text-secondary);">Rounded: ${Math.round(c.cieTotal)}</span>
                 </div>
                 
-                <div class="calc-box status" style="background: ${c.isEligible ? 'rgba(16, 185, 129, 0.05)' : 'rgba(239, 68, 68, 0.05)'}; border: 1px solid ${c.isEligible ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}; border-radius: 8px; padding: 16px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div class="calc-box status" style="background: ${c.isEligible ? (c.isPending ? 'rgba(234, 179, 8, 0.05)' : 'rgba(16, 185, 129, 0.05)') : 'rgba(239, 68, 68, 0.05)'}; border: 1px solid ${c.isEligible ? (c.isPending ? 'rgba(234, 179, 8, 0.15)' : 'rgba(16, 185, 129, 0.15)') : 'rgba(239, 68, 68, 0.15)'}; border-radius: 8px; padding: 16px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                   <span style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600;">Status</span>
-                  <span style="font-size: 18px; font-weight: 700; color: ${c.isEligible ? 'var(--success)' : 'var(--danger)'}; margin-top: 6px;">
-                    ${c.isEligible ? 'ELIGIBLE' : 'PENDING / LOW CIE'}
+                  <span style="font-size: 18px; font-weight: 700; color: ${c.isEligible ? (c.isPending ? '#eab308' : 'var(--success)') : 'var(--danger)'}; margin-top: 6px;">
+                    ${c.isEligible ? (c.isPending ? 'PENDING' : 'ELIGIBLE') : 'NOT ELIGIBLE'}
                   </span>
                 </div>
               </div>
@@ -4076,7 +4320,9 @@
       const tableBody = document.getElementById(`targets-table-${courseId}`);
       if (!tableBody) return;
       
-      const targets = getTargets(cieTotal);
+      const course = courses.find(c => c.id === courseId);
+      const isEligible = course ? course.isEligible : true;
+      const targets = getTargets(cieTotal, isEligible);
       tableBody.innerHTML = '';
       
       targets.forEach(t => {
@@ -4116,7 +4362,7 @@
         const cieTotal = c.cieTotal !== undefined ? c.cieTotal : 0;
         const grading = c.credits === 0 
           ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
-          : getFinalGrade(cieTotal, c.seeExpected);
+          : getFinalGrade(cieTotal, c.seeExpected, c.isEligible !== undefined ? c.isEligible : true);
         
         const row = `
           <tr>
@@ -4128,7 +4374,7 @@
             <td>${cieTotal.toFixed(1)}</td>
             <td>
               ${c.credits === 0 ? '<span style="color:#aaa;">N/A</span>' : `
-              <input type="number" min="0" max="100" value="${c.seeExpected || ''}" 
+              <input type="number" min="0" max="100" value="${(c.seeExpected === 0 || c.seeExpected) ? c.seeExpected : ''}" 
                      style="width: 70px; padding: 6px; background: var(--bg-primary); border: 1px solid var(--border-glass); color: var(--text-primary); border-radius: 4px; text-align: center; font-weight: 600;"
                      oninput="updateMarks('${c.id}', 'seeExpected', this.value); updateGpaRowPrediction('${c.id}')">
               `}
@@ -4154,7 +4400,7 @@
       const cieTotal = course.cieTotal !== undefined ? course.cieTotal : 0;
       const grading = course.credits === 0 
         ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
-        : getFinalGrade(cieTotal, course.seeExpected);
+        : getFinalGrade(cieTotal, course.seeExpected, course.isEligible !== undefined ? course.isEligible : true);
       
       const gradeSpan = document.getElementById(`gpa-row-grade-${courseId}`);
       const ptsStrong = document.getElementById(`gpa-row-pts-${courseId}`);
@@ -4170,11 +4416,7 @@
       updateGlobalMetrics();
     }
     
-    // CGPA Calculation trigger
-    document.getElementById('btnCalculateCgpa').addEventListener('click', () => {
-      let priorCgpa = parseFloat(document.getElementById('cgpaPrior').value) || 0;
-      let priorCreditsInput = parseInt(document.getElementById('cgpaCredits').value) || 0;
-      
+    function syncCgpaState() {
       localStorage.setItem('sit_cgpa_prior', document.getElementById('cgpaPrior').value);
       localStorage.setItem('sit_cgpa_credits', document.getElementById('cgpaCredits').value);
       
@@ -4183,34 +4425,68 @@
         clearTimeout(syncTimeout);
         syncTimeout = setTimeout(syncDataToSupabase, 1500);
       }
-      
-      // Enforce 1-8 cap
-      const priorCredits = Math.max(1, Math.min(8, priorCreditsInput));
-      
-      // Calculate current semester GP credits
-      let semCreditPoints = 0;
-      let semCredits = 0;
-      courses.forEach(c => {
-        const cieTotal = c.cieTotal !== undefined ? c.cieTotal : 0;
-        const grading = c.credits === 0 
-          ? (cieTotal >= 20 ? { grade: 'PP', points: 0, desc: 'Pass' } : { grade: 'NP', points: 0, desc: 'Not Pass' })
-          : getFinalGrade(cieTotal, c.seeExpected);
-        semCreditPoints += (grading.points * c.credits);
-        semCredits += c.credits;
-      });
-      
-      const semSgpa = semCredits > 0 ? (semCreditPoints / semCredits) : 0;
-      
-      // Overall CGPA
-      const totalCredits = priorCredits + semCredits;
-      const totalCreditPoints = (priorCgpa * priorCredits) + (semSgpa * semCredits);
-      const overallCgpa = totalCredits > 0 ? (totalCreditPoints / totalCredits) : 0;
-      
-      const cgpaOutput = document.getElementById('cgpaOutput');
-      const cgpaVal = document.getElementById('cgpaVal');
-      
-      cgpaVal.textContent = overallCgpa.toFixed(2);
-      cgpaOutput.style.display = 'block';
+    }
+    
+    // Real-time clamping and typing prevention for CGPA input fields
+    document.getElementById('cgpaPrior').addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', '.', 'ArrowUp', 'ArrowDown'];
+      if (allowedKeys.includes(e.key)) {
+        if (e.key === '.' && e.target.value.includes('.')) {
+          e.preventDefault();
+        }
+        return;
+      }
+      if (!/^\d$/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    document.getElementById('cgpaPrior').addEventListener('input', (e) => {
+      let val = parseFloat(e.target.value);
+      if (isNaN(val)) {
+        if (e.target.value === "") {
+          e.target.dataset.lastValid = "";
+          syncCgpaState();
+          updateDashboardCgpa();
+        }
+        return;
+      }
+      if (val > 10 || val < 0) {
+        e.target.value = e.target.dataset.lastValid !== undefined ? e.target.dataset.lastValid : "";
+      } else {
+        e.target.dataset.lastValid = e.target.value;
+      }
+      syncCgpaState();
+      updateDashboardCgpa();
+    });
+    
+    document.getElementById('cgpaCredits').addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'ArrowUp', 'ArrowDown'];
+      if (allowedKeys.includes(e.key)) return;
+      if (!/^\d$/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    document.getElementById('cgpaCredits').addEventListener('input', (e) => {
+      let val = parseInt(e.target.value);
+      if (isNaN(val)) {
+        if (e.target.value === "") {
+          e.target.dataset.lastValid = "";
+          syncCgpaState();
+          updateDashboardCgpa();
+        }
+        return;
+      }
+      if (val > 160 || val < 0) {
+        e.target.value = e.target.dataset.lastValid !== undefined ? e.target.dataset.lastValid : "";
+      } else {
+        e.target.dataset.lastValid = e.target.value;
+      }
+      syncCgpaState();
+      updateDashboardCgpa();
     });
     
     // Update semester badge helper
@@ -4308,6 +4584,8 @@
         const t = details.components.tests || { raw: 0, reduced: 0, max: 100, reducedMax: 34, pass: true };
         const progressText = type === 'IPCC' ? `${details.components.theoryTotal.score.toFixed(1)} / 25` : `${details.components.theoryTotal.score.toFixed(1)} / 50`;
         
+        const isTFail = details.status.tests.fail;
+        
         html += `
           <div class="sessional-section theory-section" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glass); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
             <div class="section-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
@@ -4322,17 +4600,24 @@
             <!-- Tests Section -->
             <div style="margin-bottom: 12px;">
               <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
-                <span>TEST SECTION</span>
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  TEST SECTION
+                  ${isTFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
+                </span>
                 <span>Raw: ${t.raw}/${t.max} &nbsp; <strong>${t.reduced.toFixed(1)} / ${t.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
-                  <label>Test 1 (Max 50)</label>
-                  <input type="number" step="0.5" min="0" max="50" placeholder="Test 1 out of 50" value="${m.test1 || ''}" onchange="updateSessionalValue('${course.id}', 'test1', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isTFail ? 'var(--danger)' : 'inherit'};">
+                    <span>Test 1 (Max 50)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="50" placeholder="Test 1 out of 50" value="${(m.test1 === 0 || m.test1) ? m.test1 : ''}" onchange="updateSessionalValue('${course.id}', 'test1', this.value)" style="${isTFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
                 <div class="cie-input-field">
-                  <label>Test 2 (Max 50)</label>
-                  <input type="number" step="0.5" min="0" max="50" placeholder="Test 2 out of 50" value="${m.test2 || ''}" onchange="updateSessionalValue('${course.id}', 'test2', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isTFail ? 'var(--danger)' : 'inherit'};">
+                    <span>Test 2 (Max 50)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="50" placeholder="Test 2 out of 50" value="${(m.test2 === 0 || m.test2) ? m.test2 : ''}" onchange="updateSessionalValue('${course.id}', 'test2', this.value)" style="${isTFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
               </div>
             </div>
@@ -4342,21 +4627,31 @@
           const q = details.components.quiz || { raw: 0, reduced: 0, max: 40, reducedMax: 8, pass: true };
           const a = details.components.abl || { raw: 0, reduced: 0, max: 40, reducedMax: 8, pass: true };
           
+          const isQFail = details.status.quiz.fail;
+          const isAFail = details.status.abl.fail;
+          
           html += `
             <!-- Quiz Section -->
             <div style="margin-bottom: 12px;">
               <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
-                <span>QUIZ SECTION</span>
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  QUIZ SECTION
+                  ${isQFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
+                </span>
                 <span>Raw: ${q.raw}/${q.max} &nbsp; <strong>${q.reduced.toFixed(1)} / ${q.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
-                  <label>Quiz 1 (Max 20)</label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="Quiz 1 out of 20" value="${m.quiz1 || ''}" onchange="updateSessionalValue('${course.id}', 'quiz1', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isQFail ? 'var(--danger)' : 'inherit'};">
+                    <span>Quiz 1 (Max 20)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="20" placeholder="Quiz 1 out of 20" value="${(m.quiz1 === 0 || m.quiz1) ? m.quiz1 : ''}" onchange="updateSessionalValue('${course.id}', 'quiz1', this.value)" style="${isQFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
                 <div class="cie-input-field">
-                  <label>Quiz 2 (Max 20)</label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="Quiz 2 out of 20" value="${m.quiz2 || ''}" onchange="updateSessionalValue('${course.id}', 'quiz2', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isQFail ? 'var(--danger)' : 'inherit'};">
+                    <span>Quiz 2 (Max 20)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="20" placeholder="Quiz 2 out of 20" value="${(m.quiz2 === 0 || m.quiz2) ? m.quiz2 : ''}" onchange="updateSessionalValue('${course.id}', 'quiz2', this.value)" style="${isQFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
               </div>
             </div>
@@ -4364,38 +4659,54 @@
             <!-- ABL Section -->
             <div>
               <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
-                <span>ABL SECTION</span>
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  ABL SECTION
+                  ${isAFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
+                </span>
                 <span>Raw: ${a.raw}/${a.max} &nbsp; <strong>${a.reduced.toFixed(1)} / ${a.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
-                  <label>ABL 1 (Max 20)</label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="ABL 1 out of 20" value="${m.abl1 || ''}" onchange="updateSessionalValue('${course.id}', 'abl1', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isAFail ? 'var(--danger)' : 'inherit'};">
+                    <span>ABL 1 (Max 20)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="20" placeholder="ABL 1 out of 20" value="${(m.abl1 === 0 || m.abl1) ? m.abl1 : ''}" onchange="updateSessionalValue('${course.id}', 'abl1', this.value)" style="${isAFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
                 <div class="cie-input-field">
-                  <label>ABL 2 (Max 20)</label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="ABL 2 out of 20" value="${m.abl2 || ''}" onchange="updateSessionalValue('${course.id}', 'abl2', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isAFail ? 'var(--danger)' : 'inherit'};">
+                    <span>ABL 2 (Max 20)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="20" placeholder="ABL 2 out of 20" value="${(m.abl2 === 0 || m.abl2) ? m.abl2 : ''}" onchange="updateSessionalValue('${course.id}', 'abl2', this.value)" style="${isAFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
               </div>
             </div>
           `;
         } else { // LOW_THEORY
           const iVal = details.components.internals || { raw: 0, reduced: 0, max: 40, reducedMax: 16, pass: true };
+          const isIntFail = details.status.internals.fail;
+          
           html += `
             <!-- Internals Section -->
             <div>
               <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
-                <span>INTERNALS SECTION</span>
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  INTERNALS SECTION
+                  ${isIntFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
+                </span>
                 <span>Raw: ${iVal.raw}/${iVal.max} &nbsp; <strong>${iVal.reduced.toFixed(1)} / ${iVal.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
-                  <label>Internal 1 (Max 20)</label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="Internal 1 out of 20" value="${m.quiz1 || ''}" onchange="updateSessionalValue('${course.id}', 'quiz1', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isIntFail ? 'var(--danger)' : 'inherit'};">
+                    <span>Internal 1 (Max 20)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="20" placeholder="Internal 1 out of 20" value="${(m.quiz1 === 0 || m.quiz1) ? m.quiz1 : ''}" onchange="updateSessionalValue('${course.id}', 'quiz1', this.value)" style="${isIntFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
                 <div class="cie-input-field">
-                  <label>Internal 2 (Max 20)</label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="Internal 2 out of 20" value="${m.abl1 || ''}" onchange="updateSessionalValue('${course.id}', 'abl1', this.value)">
+                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isIntFail ? 'var(--danger)' : 'inherit'};">
+                    <span>Internal 2 (Max 20)</span>
+                  </label>
+                  <input type="number" step="0.5" min="0" max="20" placeholder="Internal 2 out of 20" value="${(m.abl1 === 0 || m.abl1) ? m.abl1 : ''}" onchange="updateSessionalValue('${course.id}', 'abl1', this.value)" style="${isIntFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
               </div>
             </div>
@@ -4411,6 +4722,9 @@
         const lt = details.components.labTests || { raw: 0, max: 15, reduced: 0, reducedMax: 10, pass: true };
         const progressText = type === 'IPCC' ? `${details.components.practicalTotal.score.toFixed(1)} / 25` : `${details.components.practicalTotal.score.toFixed(1)} / 50`;
         
+        const isRecFail = details.status.labRecords.fail;
+        const isTestFail = details.status.labTests.fail;
+        
         html += `
           <div class="sessional-section practical-section" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glass); border-radius: 8px; padding: 16px;">
             <div class="section-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
@@ -4425,19 +4739,26 @@
             <!-- Lab Records Section -->
             <div style="margin-bottom: 16px;">
               <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
-                <span>LAB RECORDS</span>
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  LAB RECORDS
+                  ${isRecFail ? `<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>` : ''}
+                </span>
                 <span>Sum: ${lr.raw}/${lr.max} &nbsp; <strong>${lr.reduced.toFixed(1)} / ${lr.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid" id="lab-records-grid-${course.id}">
-                ${(m.labRecords || [0]).map((score, idx) => `
-                  <div class="cie-input-field dynamic-field">
-                    <label>Lab ${idx + 1} (Max 35)</label>
-                    <div style="display: flex; gap: 4px;">
-                      <input type="number" step="0.5" min="0" max="35" placeholder="Lab ${idx + 1} out of 35" value="${score || ''}" onchange="updateLabRecordValue('${course.id}', ${idx}, this.value)">
-                      ${(m.labRecords || [0]).length > 1 ? `<button type="button" class="btn-qty" onclick="removeLabRecordIndex('${course.id}', ${idx})" style="padding: 0 8px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; border-radius: 4px; cursor: pointer;">&times;</button>` : ''}
+                ${(m.labRecords || ['']).map((score, idx) => {
+                  return `
+                    <div class="cie-input-field dynamic-field">
+                      <label style="display: flex; justify-content: space-between; align-items: center; color: ${isRecFail ? 'var(--danger)' : 'inherit'};">
+                        <span>Lab ${idx + 1} (Max 35)</span>
+                      </label>
+                      <div style="display: flex; gap: 4px;">
+                        <input type="number" step="0.5" min="0" max="35" placeholder="Lab ${idx + 1} out of 35" value="${(score === 0 || score) ? score : ''}" onchange="updateLabRecordValue('${course.id}', ${idx}, this.value)" style="${isRecFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
+                        ${(m.labRecords || ['']).length > 1 ? `<button type="button" class="btn-qty" onclick="removeLabRecordIndex('${course.id}', ${idx})" style="padding: 0 8px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; border-radius: 4px; cursor: pointer;">&times;</button>` : ''}
+                      </div>
                     </div>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
                 
                 <div class="cie-input-field" style="display: flex; align-items: flex-end;">
                   <button type="button" class="action-btn secondary small" onclick="addLabRecordInput('${course.id}')" style="width: 100%; height: 38px; border-style: dashed; background: transparent; color: var(--text-secondary);">
@@ -4450,19 +4771,26 @@
             <!-- Lab Test Section -->
             <div>
               <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
-                <span>LAB TEST SECTION</span>
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  LAB TEST SECTION
+                  ${isTestFail ? `<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>` : ''}
+                </span>
                 <span>Sum: ${lt.raw}/${lt.max} &nbsp; <strong>${lt.reduced.toFixed(1)} / ${lt.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid" id="lab-tests-grid-${course.id}">
-                ${(m.labTests || [0]).map((score, idx) => `
-                  <div class="cie-input-field dynamic-field">
-                    <label>Lab Test ${idx + 1} (Max 15)</label>
-                    <div style="display: flex; gap: 4px;">
-                      <input type="number" step="0.5" min="0" max="15" placeholder="Lab Test ${idx + 1} out of 15" value="${score || ''}" onchange="updateLabTestValue('${course.id}', ${idx}, this.value)">
-                      ${(m.labTests || [0]).length > 1 ? `<button type="button" class="btn-qty" onclick="removeLabTestIndex('${course.id}', ${idx})" style="padding: 0 8px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; border-radius: 4px; cursor: pointer;">&times;</button>` : ''}
+                ${(m.labTests || ['']).map((score, idx) => {
+                  return `
+                    <div class="cie-input-field dynamic-field">
+                      <label style="display: flex; justify-content: space-between; align-items: center; color: ${isTestFail ? 'var(--danger)' : 'inherit'};">
+                        <span>Lab Test ${idx + 1} (Max 15)</span>
+                      </label>
+                      <div style="display: flex; gap: 4px;">
+                        <input type="number" step="0.5" min="0" max="15" placeholder="Lab Test ${idx + 1} out of 15" value="${(score === 0 || score) ? score : ''}" onchange="updateLabTestValue('${course.id}', ${idx}, this.value)" style="${isTestFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
+                        ${(m.labTests || ['']).length > 1 ? `<button type="button" class="btn-qty" onclick="removeLabTestIndex('${course.id}', ${idx})" style="padding: 0 8px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; border-radius: 4px; cursor: pointer;">&times;</button>` : ''}
+                      </div>
                     </div>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
                 
                 <div class="cie-input-field" style="display: flex; align-items: flex-end;">
                   <button type="button" class="action-btn secondary small" onclick="addLabTestInput('${course.id}')" style="width: 100%; height: 38px; border-style: dashed; background: transparent; color: var(--text-secondary);">
@@ -4505,6 +4833,7 @@
       const details = calculateCieDetails(course);
       course.cieTotal = details.cie;
       course.isEligible = details.isEligible;
+      course.isPending = details.isPending;
       
       // Update sessional panels container
       const panelsContainer = document.querySelector(`#course-card-${id} .sessional-panels-container`);
@@ -4526,12 +4855,12 @@
       
       const statusBox = document.querySelector(`#course-card-${id} .calc-box.status`);
       if (statusBox) {
-        statusBox.style.background = details.isEligible ? 'rgba(16, 185, 129, 0.05)' : 'rgba(239, 68, 68, 0.05)';
-        statusBox.style.borderColor = details.isEligible ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+        statusBox.style.background = details.isEligible ? (details.isPending ? 'rgba(234, 179, 8, 0.05)' : 'rgba(16, 185, 129, 0.05)') : 'rgba(239, 68, 68, 0.05)';
+        statusBox.style.borderColor = details.isEligible ? (details.isPending ? 'rgba(234, 179, 8, 0.15)' : 'rgba(16, 185, 129, 0.15)') : 'rgba(239, 68, 68, 0.15)';
         const statusTitle = statusBox.querySelector('span:last-child');
         if (statusTitle) {
-          statusTitle.style.color = details.isEligible ? 'var(--success)' : 'var(--danger)';
-          statusTitle.textContent = details.isEligible ? 'ELIGIBLE' : 'PENDING / LOW CIE';
+          statusTitle.style.color = details.isEligible ? (details.isPending ? '#eab308' : 'var(--success)') : 'var(--danger)';
+          statusTitle.textContent = details.isEligible ? (details.isPending ? 'PENDING' : 'ELIGIBLE') : 'NOT ELIGIBLE';
         }
       }
       
@@ -4544,8 +4873,8 @@
       
       const statusB = document.querySelector(`#course-card-${id} .status-badge`);
       if (statusB) {
-        statusB.className = `status-badge ${details.isEligible ? 'success' : 'danger'}`;
-        statusB.textContent = details.isEligible ? 'Eligible' : 'Low CIE';
+        statusB.className = `status-badge ${details.isEligible ? (details.isPending ? 'warning' : 'success') : 'danger'}`;
+        statusB.textContent = details.isEligible ? (details.isPending ? 'Pending' : 'Eligible') : 'Not Eligible';
       }
 
       // Save updated CIE marks state & update dashboard metrics
@@ -4561,11 +4890,14 @@
         let maxVal = 50; // default for test1, test2
         if (['quiz1', 'quiz2', 'abl1', 'abl2'].includes(field)) maxVal = 20;
         
-        let parsed = parseFloat(value);
-        if (isNaN(parsed)) parsed = 0;
-        parsed = Math.max(0, Math.min(parsed, maxVal));
-        
-        course.cieMarks[field] = parsed;
+        if (value === '' || value === undefined) {
+          course.cieMarks[field] = '';
+        } else {
+          let parsed = parseFloat(value);
+          if (isNaN(parsed)) parsed = 0;
+          parsed = Math.max(0, Math.min(parsed, maxVal));
+          course.cieMarks[field] = parsed;
+        }
         updateCardUI(id);
       }
     }
@@ -4573,11 +4905,14 @@
     function updateLabRecordValue(id, index, value) {
       const course = courses.find(c => c.id === id);
       if (course && course.cieMarks && course.cieMarks.labRecords) {
-        let parsed = parseFloat(value);
-        if (isNaN(parsed)) parsed = 0;
-        parsed = Math.max(0, Math.min(parsed, 35));
-        
-        course.cieMarks.labRecords[index] = parsed;
+        if (value === '' || value === undefined) {
+          course.cieMarks.labRecords[index] = '';
+        } else {
+          let parsed = parseFloat(value);
+          if (isNaN(parsed)) parsed = 0;
+          parsed = Math.max(0, Math.min(parsed, 35));
+          course.cieMarks.labRecords[index] = parsed;
+        }
         updateCardUI(id);
       }
     }
@@ -4585,8 +4920,8 @@
     function addLabRecordInput(id) {
       const course = courses.find(c => c.id === id);
       if (course && course.cieMarks) {
-        if (!course.cieMarks.labRecords) course.cieMarks.labRecords = [0];
-        course.cieMarks.labRecords.push(0);
+        if (!course.cieMarks.labRecords) course.cieMarks.labRecords = [''];
+        course.cieMarks.labRecords.push('');
         updateCardUI(id);
       }
     }
@@ -4604,11 +4939,14 @@
     function updateLabTestValue(id, index, value) {
       const course = courses.find(c => c.id === id);
       if (course && course.cieMarks && course.cieMarks.labTests) {
-        let parsed = parseFloat(value);
-        if (isNaN(parsed)) parsed = 0;
-        parsed = Math.max(0, Math.min(parsed, 15));
-        
-        course.cieMarks.labTests[index] = parsed;
+        if (value === '' || value === undefined) {
+          course.cieMarks.labTests[index] = '';
+        } else {
+          let parsed = parseFloat(value);
+          if (isNaN(parsed)) parsed = 0;
+          parsed = Math.max(0, Math.min(parsed, 15));
+          course.cieMarks.labTests[index] = parsed;
+        }
         updateCardUI(id);
       }
     }
@@ -4616,8 +4954,8 @@
     function addLabTestInput(id) {
       const course = courses.find(c => c.id === id);
       if (course && course.cieMarks) {
-        if (!course.cieMarks.labTests) course.cieMarks.labTests = [0];
-        course.cieMarks.labTests.push(0);
+        if (!course.cieMarks.labTests) course.cieMarks.labTests = [''];
+        course.cieMarks.labTests.push('');
         updateCardUI(id);
       }
     }
@@ -4657,6 +4995,7 @@
         const details = calculateCieDetails(course);
         course.cieTotal = details.cie;
         course.isEligible = details.isEligible;
+        course.isPending = details.isPending;
         saveToLocalStorage();
         updateGlobalMetrics();
         showToast(`${course.name} calculated and metrics updated!`, "📈");
@@ -5112,8 +5451,17 @@
 
     async function logout() {
         if(!supabaseClient) return;
-        localStorage.removeItem('sit_profile_pic');
-        localStorage.removeItem('sit_last_sync_time');
+        
+        // Clear all local storage keys starting with sit_
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('sit_')) {
+                keysToRemove.push(key);
+            }
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+        
         await supabaseClient.auth.signOut();
     }
 
@@ -5178,6 +5526,38 @@
                     showToast('Data synced from cloud ☁️', '✅');
                     return;
                 }
+            } else {
+                // No data in Supabase (new account or first login). Clear any remaining local cache
+                courses = [];
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('sit_') && key !== 'sit_loaded_branch' && key !== 'sit_loaded_sem') {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(k => localStorage.removeItem(k));
+                
+                document.getElementById('cgpaPrior').value = '0.00';
+                document.getElementById('cgpaCredits').value = '';
+                
+                const profileBranch = currentUser?.user_metadata?.branch || 'CS';
+                localStorage.setItem('sit_loaded_branch', profileBranch);
+                const branchSelectEl = document.getElementById('branchSelect');
+                if (branchSelectEl) {
+                    branchSelectEl.value = profileBranch;
+                    branchSelectEl.disabled = true;
+                }
+                
+                const semSelectEl = document.getElementById('semesterSelect');
+                if (semSelectEl) {
+                    semSelectEl.value = '';
+                }
+                localStorage.removeItem('sit_loaded_sem');
+                
+                updateSemesterBadge();
+                renderAll();
+                return;
             }
 
             if (courses && courses.length > 0) {
