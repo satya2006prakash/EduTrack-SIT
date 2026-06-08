@@ -2943,14 +2943,20 @@
         const t2Val = m.test2;
         const t1 = parseFloat(t1Val) || 0;
         const t2 = parseFloat(t2Val) || 0;
-        const tSum = t1 + t2;
-        const tReduced = Math.round((tSum / 100) * 34);
         
         const t1Empty = isEmpty(t1Val);
         const t2Empty = isEmpty(t2Val);
         
+        const t1Rounded = t1Empty ? 0 : Math.round(t1);
+        const t2Rounded = t2Empty ? 0 : Math.round(t2);
+        const tSum = t1Rounded + t2Rounded;
+        const tAvg = tSum / 2;
+        const t1Reduced = t1Empty ? 0 : Math.round((t1 / 50) * 17);
+        const t2Reduced = t2Empty ? 0 : Math.round((t2 / 50) * 17);
+        const tReduced = t1Reduced + t2Reduced;
+        
         if (t1Empty || t2Empty) {
-          const maxPossible = (t1Empty ? 50 : t1) + (t2Empty ? 50 : t2);
+          const maxPossible = (t1Empty ? 50 : t1Rounded) + (t2Empty ? 50 : t2Rounded);
           if (maxPossible < 40) {
             isTFail = true;
           } else {
@@ -2963,21 +2969,27 @@
         }
         
         theoryRaw += tReduced;
-        components.tests = { raw: tSum, reduced: tReduced, pass: !isTFail, max: 100, reducedMax: 34 };
+        components.tests = { raw: tSum, avg: tAvg, reduced: tReduced, pass: !isTFail, max: 100, reducedMax: 34 };
         
         if (type === 'IPCC' || type === 'THEORY_ONLY') {
           const q1Val = m.quiz1;
           const q2Val = m.quiz2;
           const q1 = parseFloat(q1Val) || 0;
           const q2 = parseFloat(q2Val) || 0;
-          const qSum = q1 + q2;
-          const qReduced = Math.round((qSum / 40) * 8);
           
           const q1Empty = isEmpty(q1Val);
           const q2Empty = isEmpty(q2Val);
           
+          const q1Rounded = q1Empty ? 0 : Math.round(q1);
+          const q2Rounded = q2Empty ? 0 : Math.round(q2);
+          const qSum = q1Rounded + q2Rounded;
+          const qAvg = qSum / 2;
+          const q1Reduced = q1Empty ? 0 : Math.round((q1 / 20) * 4);
+          const q2Reduced = q2Empty ? 0 : Math.round((q2 / 20) * 4);
+          const qReduced = q1Reduced + q2Reduced;
+          
           if (q1Empty || q2Empty) {
-            const maxPossible = (q1Empty ? 20 : q1) + (q2Empty ? 20 : q2);
+            const maxPossible = (q1Empty ? 20 : q1Rounded) + (q2Empty ? 20 : q2Rounded);
             if (maxPossible < 16) {
               isQFail = true;
             } else {
@@ -2990,20 +3002,26 @@
           }
           
           theoryRaw += qReduced;
-          components.quiz = { raw: qSum, reduced: qReduced, pass: !isQFail, max: 40, reducedMax: 8 };
+          components.quiz = { raw: qSum, avg: qAvg, reduced: qReduced, pass: !isQFail, max: 40, reducedMax: 8 };
           
           const a1Val = m.abl1;
           const a2Val = m.abl2;
           const a1 = parseFloat(a1Val) || 0;
           const a2 = parseFloat(a2Val) || 0;
-          const aSum = a1 + a2;
-          const aReduced = Math.round((aSum / 40) * 8);
           
           const a1Empty = isEmpty(a1Val);
           const a2Empty = isEmpty(a2Val);
           
+          const a1Rounded = a1Empty ? 0 : Math.round(a1);
+          const a2Rounded = a2Empty ? 0 : Math.round(a2);
+          const aSum = a1Rounded + a2Rounded;
+          const aAvg = aSum / 2;
+          const a1Reduced = a1Empty ? 0 : Math.round((a1 / 20) * 4);
+          const a2Reduced = a2Empty ? 0 : Math.round((a2 / 20) * 4);
+          const aReduced = a1Reduced + a2Reduced;
+          
           if (a1Empty || a2Empty) {
-            const maxPossible = (a1Empty ? 20 : a1) + (a2Empty ? 20 : a2);
+            const maxPossible = (a1Empty ? 20 : a1Rounded) + (a2Empty ? 20 : a2Rounded);
             if (maxPossible < 16) {
               isAFail = true;
             } else {
@@ -3016,20 +3034,26 @@
           }
           
           theoryRaw += aReduced;
-          components.abl = { raw: aSum, reduced: aReduced, pass: !isAFail, max: 40, reducedMax: 8 };
+          components.abl = { raw: aSum, avg: aAvg, reduced: aReduced, pass: !isAFail, max: 40, reducedMax: 8 };
         } else { // LOW_THEORY
           const int1Val = m.quiz1;
           const int2Val = m.abl1;
           const int1 = parseFloat(int1Val) || 0;
           const int2 = parseFloat(int2Val) || 0;
-          const intSum = int1 + int2;
-          const intReduced = Math.round((intSum / 40) * 16);
           
           const int1Empty = isEmpty(int1Val);
           const int2Empty = isEmpty(int2Val);
           
+          const int1Rounded = int1Empty ? 0 : Math.round(int1);
+          const int2Rounded = int2Empty ? 0 : Math.round(int2);
+          const intSum = int1Rounded + int2Rounded;
+          const intAvg = intSum / 2;
+          const int1Reduced = int1Empty ? 0 : Math.round((int1 / 20) * 8);
+          const int2Reduced = int2Empty ? 0 : Math.round((int2 / 20) * 8);
+          const intReduced = int1Reduced + int2Reduced;
+          
           if (int1Empty || int2Empty) {
-            const maxPossible = (int1Empty ? 20 : int1) + (int2Empty ? 20 : int2);
+            const maxPossible = (int1Empty ? 20 : int1Rounded) + (int2Empty ? 20 : int2Rounded);
             if (maxPossible < 16) {
               isIntFail = true;
             } else {
@@ -3042,17 +3066,27 @@
           }
           
           theoryRaw += intReduced;
-          components.internals = { raw: intSum, reduced: intReduced, pass: !isIntFail, max: 40, reducedMax: 16 };
+          components.internals = { raw: intSum, avg: intAvg, reduced: intReduced, pass: !isIntFail, max: 40, reducedMax: 16 };
         }
       }
       
       // 2. PRACTICAL COMPONENT
       if (type === 'IPCC' || type === 'LAB_ONLY') {
         const recordList = m.labRecords || [''];
-        const recordSum = recordList.reduce((sum, val) => sum + (isEmpty(val) ? 0 : parseFloat(val)), 0);
+        const recordListRounded = recordList.map(val => isEmpty(val) ? 0 : Math.round(parseFloat(val)));
+        const recordSum = recordListRounded.reduce((sum, val) => sum + val, 0);
         const recordMax = recordList.length * 35;
         const recordReducedMax = type === 'IPCC' ? 15 : 35;
-        const recordReduced = recordMax > 0 ? Math.round((recordSum / recordMax) * recordReducedMax) : 0;
+        const recordAvg = recordList.length > 0 ? (recordSum / recordList.length) : 0;
+        
+        let recordReduced = 0;
+        if (recordList.length > 0) {
+          recordReduced = recordList.reduce((sum, val) => {
+            if (isEmpty(val)) return sum;
+            const scaled = (parseFloat(val) / 35) * (recordReducedMax / recordList.length);
+            return sum + Math.round(scaled);
+          }, 0);
+        }
         
         const recordThreshold = recordList.length * 14;
         const recordEmptyCount = recordList.filter(isEmpty).length;
@@ -3071,13 +3105,23 @@
         }
         
         practicalRaw += recordReduced;
-        components.labRecords = { raw: recordSum, max: recordMax, reduced: recordReduced, reducedMax: recordReducedMax, pass: !isRecFail };
+        components.labRecords = { raw: recordSum, avg: recordAvg, max: recordMax, reduced: recordReduced, reducedMax: recordReducedMax, pass: !isRecFail };
         
         const testList = m.labTests || [''];
-        const testSum = testList.reduce((sum, val) => sum + (isEmpty(val) ? 0 : parseFloat(val)), 0);
+        const testListRounded = testList.map(val => isEmpty(val) ? 0 : Math.round(parseFloat(val)));
+        const testSum = testListRounded.reduce((sum, val) => sum + val, 0);
         const testMax = testList.length * 15;
         const testReducedMax = type === 'IPCC' ? 10 : 15;
-        const testReduced = testMax > 0 ? Math.round((testSum / testMax) * testReducedMax) : 0;
+        const testAvg = testList.length > 0 ? (testSum / testList.length) : 0;
+        
+        let testReduced = 0;
+        if (testList.length > 0) {
+          testReduced = testList.reduce((sum, val) => {
+            if (isEmpty(val)) return sum;
+            const scaled = (parseFloat(val) / 15) * (testReducedMax / testList.length);
+            return sum + Math.round(scaled);
+          }, 0);
+        }
         
         const testThreshold = testList.length * 6;
         const testEmptyCount = testList.filter(isEmpty).length;
@@ -3096,7 +3140,7 @@
         }
         
         practicalRaw += testReduced;
-        components.labTests = { raw: testSum, max: testMax, reduced: testReduced, reducedMax: testReducedMax, pass: !isTestFail };
+        components.labTests = { raw: testSum, avg: testAvg, max: testMax, reduced: testReduced, reducedMax: testReducedMax, pass: !isTestFail };
       }
       
       let finalCie = 0;
@@ -4581,10 +4625,11 @@
       
       // 1. THEORY COMPONENT
       if (type === 'IPCC' || type === 'THEORY_ONLY' || type === 'LOW_THEORY') {
-        const t = details.components.tests || { raw: 0, reduced: 0, max: 100, reducedMax: 34, pass: true };
+        const t = details.components.tests || { raw: 0, avg: 0, reduced: 0, max: 100, reducedMax: 34, pass: true };
         const progressText = type === 'IPCC' ? `${details.components.theoryTotal.score.toFixed(1)} / 25` : `${details.components.theoryTotal.score.toFixed(1)} / 50`;
         
         const isTFail = details.status.tests.fail;
+        const tAvg = t.avg !== undefined ? t.avg : (t.raw / 2);
         
         html += `
           <div class="sessional-section theory-section" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glass); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
@@ -4604,7 +4649,7 @@
                   TEST SECTION
                   ${isTFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
                 </span>
-                <span>Raw: ${t.raw}/${t.max} &nbsp; <strong>${t.reduced.toFixed(1)} / ${t.reducedMax}</strong></span>
+                <span>Avg: ${tAvg.toFixed(1)}/50 &nbsp; <strong>${t.reduced.toFixed(1)} / ${t.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
@@ -4624,11 +4669,14 @@
         `;
         
         if (type === 'IPCC' || type === 'THEORY_ONLY') {
-          const q = details.components.quiz || { raw: 0, reduced: 0, max: 40, reducedMax: 8, pass: true };
-          const a = details.components.abl || { raw: 0, reduced: 0, max: 40, reducedMax: 8, pass: true };
+          const q = details.components.quiz || { raw: 0, avg: 0, reduced: 0, max: 40, reducedMax: 8, pass: true };
+          const a = details.components.abl || { raw: 0, avg: 0, reduced: 0, max: 40, reducedMax: 8, pass: true };
           
           const isQFail = details.status.quiz.fail;
           const isAFail = details.status.abl.fail;
+          
+          const qAvg = q.avg !== undefined ? q.avg : (q.raw / 2);
+          const aAvg = a.avg !== undefined ? a.avg : (a.raw / 2);
           
           html += `
             <!-- Quiz Section -->
@@ -4638,7 +4686,7 @@
                   QUIZ SECTION
                   ${isQFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
                 </span>
-                <span>Raw: ${q.raw}/${q.max} &nbsp; <strong>${q.reduced.toFixed(1)} / ${q.reducedMax}</strong></span>
+                <span>Avg: ${qAvg.toFixed(1)}/20 &nbsp; <strong>${q.reduced.toFixed(1)} / ${q.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
@@ -4663,7 +4711,7 @@
                   ABL SECTION
                   ${isAFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
                 </span>
-                <span>Raw: ${a.raw}/${a.max} &nbsp; <strong>${a.reduced.toFixed(1)} / ${a.reducedMax}</strong></span>
+                <span>Avg: ${aAvg.toFixed(1)}/20 &nbsp; <strong>${a.reduced.toFixed(1)} / ${a.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
@@ -4682,8 +4730,9 @@
             </div>
           `;
         } else { // LOW_THEORY
-          const iVal = details.components.internals || { raw: 0, reduced: 0, max: 40, reducedMax: 16, pass: true };
+          const iVal = details.components.internals || { raw: 0, avg: 0, reduced: 0, max: 40, reducedMax: 16, pass: true };
           const isIntFail = details.status.internals.fail;
+          const intAvg = iVal.avg !== undefined ? iVal.avg : (iVal.raw / 2);
           
           html += `
             <!-- Internals Section -->
@@ -4693,7 +4742,7 @@
                   INTERNALS SECTION
                   ${isIntFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
                 </span>
-                <span>Raw: ${iVal.raw}/${iVal.max} &nbsp; <strong>${iVal.reduced.toFixed(1)} / ${iVal.reducedMax}</strong></span>
+                <span>Avg: ${intAvg.toFixed(1)}/20 &nbsp; <strong>${iVal.reduced.toFixed(1)} / ${iVal.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid">
                 <div class="cie-input-field">
@@ -4718,12 +4767,15 @@
       
       // 2. PRACTICAL COMPONENT
       if (type === 'IPCC' || type === 'LAB_ONLY') {
-        const lr = details.components.labRecords || { raw: 0, max: 35, reduced: 0, reducedMax: 15, pass: true };
-        const lt = details.components.labTests || { raw: 0, max: 15, reduced: 0, reducedMax: 10, pass: true };
+        const lr = details.components.labRecords || { raw: 0, avg: 0, max: 35, reduced: 0, reducedMax: 15, pass: true };
+        const lt = details.components.labTests || { raw: 0, avg: 0, max: 15, reduced: 0, reducedMax: 10, pass: true };
         const progressText = type === 'IPCC' ? `${details.components.practicalTotal.score.toFixed(1)} / 25` : `${details.components.practicalTotal.score.toFixed(1)} / 50`;
         
         const isRecFail = details.status.labRecords.fail;
         const isTestFail = details.status.labTests.fail;
+        
+        const recordAvg = lr.avg !== undefined ? lr.avg : (lr.raw / (lr.max / 35 || 1));
+        const testAvg = lt.avg !== undefined ? lt.avg : (lt.raw / (lt.max / 15 || 1));
         
         html += `
           <div class="sessional-section practical-section" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-glass); border-radius: 8px; padding: 16px;">
@@ -4743,7 +4795,7 @@
                   LAB RECORDS
                   ${isRecFail ? `<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>` : ''}
                 </span>
-                <span>Sum: ${lr.raw}/${lr.max} &nbsp; <strong>${lr.reduced.toFixed(1)} / ${lr.reducedMax}</strong></span>
+                <span>Avg: ${recordAvg.toFixed(1)}/35 &nbsp; <strong>${lr.reduced.toFixed(1)} / ${lr.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid" id="lab-records-grid-${course.id}">
                 ${(m.labRecords || ['']).map((score, idx) => {
@@ -4775,7 +4827,7 @@
                   LAB TEST SECTION
                   ${isTestFail ? `<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>` : ''}
                 </span>
-                <span>Sum: ${lt.raw}/${lt.max} &nbsp; <strong>${lt.reduced.toFixed(1)} / ${lt.reducedMax}</strong></span>
+                <span>Avg: ${testAvg.toFixed(1)}/15 &nbsp; <strong>${lt.reduced.toFixed(1)} / ${lt.reducedMax}</strong></span>
               </div>
               <div class="cie-inputs-grid" id="lab-tests-grid-${course.id}">
                 ${(m.labTests || ['']).map((score, idx) => {
