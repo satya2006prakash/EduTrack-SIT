@@ -3078,15 +3078,7 @@
         const recordMax = recordList.length * 35;
         const recordReducedMax = type === 'IPCC' ? 15 : 35;
         const recordAvg = recordList.length > 0 ? (recordSum / recordList.length) : 0;
-        
-        let recordReduced = 0;
-        if (recordList.length > 0) {
-          recordReduced = recordList.reduce((sum, val) => {
-            if (isEmpty(val)) return sum;
-            const scaled = (parseFloat(val) / 35) * (recordReducedMax / recordList.length);
-            return sum + Math.round(scaled);
-          }, 0);
-        }
+        const recordReduced = recordMax > 0 ? Math.round((recordAvg / 35) * recordReducedMax) : 0;
         
         const recordThreshold = recordList.length * 14;
         const recordEmptyCount = recordList.filter(isEmpty).length;
@@ -3113,15 +3105,7 @@
         const testMax = testList.length * 15;
         const testReducedMax = type === 'IPCC' ? 10 : 15;
         const testAvg = testList.length > 0 ? (testSum / testList.length) : 0;
-        
-        let testReduced = 0;
-        if (testList.length > 0) {
-          testReduced = testList.reduce((sum, val) => {
-            if (isEmpty(val)) return sum;
-            const scaled = (parseFloat(val) / 15) * (testReducedMax / testList.length);
-            return sum + Math.round(scaled);
-          }, 0);
-        }
+        const testReduced = testMax > 0 ? Math.round((testAvg / 15) * testReducedMax) : 0;
         
         const testThreshold = testList.length * 6;
         const testEmptyCount = testList.filter(isEmpty).length;
