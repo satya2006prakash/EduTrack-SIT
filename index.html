@@ -2908,7 +2908,7 @@
       } else if (type === 'LAB_ONLY') {
         return { labRecords: [''], labTests: [''] };
       } else { // LOW_THEORY
-        return { test1: '', test2: '', quiz1: '', abl1: '' };
+        return { test1: '', test2: '' };
       }
     }
 
@@ -2951,8 +2951,19 @@
         const t2Rounded = t2Empty ? 0 : Math.round(t2);
         const tSum = t1Rounded + t2Rounded;
         const tAvg = tSum / 2;
-        const t1Reduced = t1Empty ? 0 : Math.round((t1 / 50) * 17);
-        const t2Reduced = t2Empty ? 0 : Math.round((t2 / 50) * 17);
+        
+        let t1Reduced = 0;
+        let t2Reduced = 0;
+        let tReducedMax = 34;
+        
+        if (type === 'LOW_THEORY') {
+          tReducedMax = 50;
+          t1Reduced = t1Empty ? 0 : Math.round((t1 / 50) * 25);
+          t2Reduced = t2Empty ? 0 : Math.round((t2 / 50) * 25);
+        } else {
+          t1Reduced = t1Empty ? 0 : Math.round((t1 / 50) * 17);
+          t2Reduced = t2Empty ? 0 : Math.round((t2 / 50) * 17);
+        }
         const tReduced = t1Reduced + t2Reduced;
         
         if (t1Empty || t2Empty) {
@@ -2969,7 +2980,7 @@
         }
         
         theoryRaw += tReduced;
-        components.tests = { raw: tSum, avg: tAvg, reduced: tReduced, pass: !isTFail, max: 100, reducedMax: 34 };
+        components.tests = { raw: tSum, avg: tAvg, reduced: tReduced, pass: !isTFail, max: 100, reducedMax: tReducedMax };
         
         if (type === 'IPCC' || type === 'THEORY_ONLY') {
           const q1Val = m.quiz1;
@@ -3035,38 +3046,6 @@
           
           theoryRaw += aReduced;
           components.abl = { raw: aSum, avg: aAvg, reduced: aReduced, pass: !isAFail, max: 40, reducedMax: 8 };
-        } else { // LOW_THEORY
-          const int1Val = m.quiz1;
-          const int2Val = m.abl1;
-          const int1 = parseFloat(int1Val) || 0;
-          const int2 = parseFloat(int2Val) || 0;
-          
-          const int1Empty = isEmpty(int1Val);
-          const int2Empty = isEmpty(int2Val);
-          
-          const int1Rounded = int1Empty ? 0 : Math.round(int1);
-          const int2Rounded = int2Empty ? 0 : Math.round(int2);
-          const intSum = int1Rounded + int2Rounded;
-          const intAvg = intSum / 2;
-          const int1Reduced = int1Empty ? 0 : Math.round((int1 / 20) * 8);
-          const int2Reduced = int2Empty ? 0 : Math.round((int2 / 20) * 8);
-          const intReduced = int1Reduced + int2Reduced;
-          
-          if (int1Empty || int2Empty) {
-            const maxPossible = (int1Empty ? 20 : int1Rounded) + (int2Empty ? 20 : int2Rounded);
-            if (maxPossible < 16) {
-              isIntFail = true;
-            } else {
-              isIntPending = true;
-            }
-          } else {
-            if (intSum < 16) {
-              isIntFail = true;
-            }
-          }
-          
-          theoryRaw += intReduced;
-          components.internals = { raw: intSum, avg: intAvg, reduced: intReduced, pass: !isIntFail, max: 40, reducedMax: 16 };
         }
       }
       
@@ -4709,37 +4688,6 @@
                     <span>ABL 2 (Max 20)</span>
                   </label>
                   <input type="number" step="0.5" min="0" max="20" placeholder="ABL 2 out of 20" value="${(m.abl2 === 0 || m.abl2) ? m.abl2 : ''}" onchange="updateSessionalValue('${course.id}', 'abl2', this.value)" style="${isAFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
-                </div>
-              </div>
-            </div>
-          `;
-        } else { // LOW_THEORY
-          const iVal = details.components.internals || { raw: 0, avg: 0, reduced: 0, max: 40, reducedMax: 16, pass: true };
-          const isIntFail = details.status.internals.fail;
-          const intAvg = iVal.avg !== undefined ? iVal.avg : (iVal.raw / 2);
-          
-          html += `
-            <!-- Internals Section -->
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">
-                <span style="display: flex; align-items: center; gap: 6px;">
-                  INTERNALS SECTION
-                  ${isIntFail ? '<span style="color: var(--danger); font-size: 9.5px; font-weight: 700;">(Fail < 40% overall)</span>' : ''}
-                </span>
-                <span>Avg: ${intAvg.toFixed(1)}/20 &nbsp; <strong>${iVal.reduced.toFixed(1)} / ${iVal.reducedMax}</strong></span>
-              </div>
-              <div class="cie-inputs-grid">
-                <div class="cie-input-field">
-                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isIntFail ? 'var(--danger)' : 'inherit'};">
-                    <span>Internal 1 (Max 20)</span>
-                  </label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="Internal 1 out of 20" value="${(m.quiz1 === 0 || m.quiz1) ? m.quiz1 : ''}" onchange="updateSessionalValue('${course.id}', 'quiz1', this.value)" style="${isIntFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
-                </div>
-                <div class="cie-input-field">
-                  <label style="display: flex; justify-content: space-between; align-items: center; color: ${isIntFail ? 'var(--danger)' : 'inherit'};">
-                    <span>Internal 2 (Max 20)</span>
-                  </label>
-                  <input type="number" step="0.5" min="0" max="20" placeholder="Internal 2 out of 20" value="${(m.abl1 === 0 || m.abl1) ? m.abl1 : ''}" onchange="updateSessionalValue('${course.id}', 'abl1', this.value)" style="${isIntFail ? 'border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.02);' : ''}">
                 </div>
               </div>
             </div>
